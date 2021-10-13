@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import { useDeck } from './decks';
+import useDeck from './decks/useDeck';
 
 export enum GameModes {
   Standard = 'Standard',
