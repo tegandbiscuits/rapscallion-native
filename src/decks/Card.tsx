@@ -13,7 +13,7 @@ export interface ICard {
 };
 
 interface Props extends ICard {
-  onPress: () => void;
+  onPress: (hpChange: number) => void;
 }
 
 const styles = StyleSheet.create({
@@ -61,11 +61,21 @@ const Card = ({ onPress, suite, number }: Props) => {
       break;
   }
 
+  let pointModification = number;
+  if (cardType === 'enemy') {
+    pointModification = -pointModification;
+  }
+
+  const handlePress = () => {
+    const hpChange = cardType !== 'shield' ? pointModification : 0;
+    onPress(hpChange);
+  };
+
   return (
-    <TouchableRipple onPress={onPress}>
+    <TouchableRipple onPress={handlePress}>
       <Surface style={styles.card}>
         <View>
-          <Text>{`${cardType === 'enemy' ? '-' : ''}${number}`}</Text>
+          <Text>{pointModification}</Text>
           <Text>{suite}</Text>
         </View>
         {CenterImage(cardType)}
