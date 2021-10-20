@@ -7,12 +7,12 @@ import Dragon from '../icons/Dragon';
 
 type CardTypes = 'potion' | 'shield' | 'enemy';
 
-export interface ICard {
-  suite: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds',
-  number: number
+export interface IPlayCard {
+  suit: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds',
+  rank: number
 };
 
-interface Props extends ICard {
+interface Props extends IPlayCard {
   onPress: (hpChange: number) => void;
 }
 
@@ -23,17 +23,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
 });
-
-const cardLabel = (suit: ICard['suite']): string => {
-  switch (suit) {
-    case 'hearts':
-      return 'Potion';
-    case 'diamonds':
-      return 'Shield';
-    default:
-      return 'Demon';
-  }
-}
 
 const CenterImage = (cardType: CardTypes) => {
   switch (cardType) {
@@ -46,22 +35,22 @@ const CenterImage = (cardType: CardTypes) => {
   }
 }
 
-const Card = ({ onPress, suite, number }: Props) => {
+const PlayCard = ({ onPress, suit, rank }: Props) => {
   let cardType: CardTypes;
+  let cardLabel: string; // TODO: this could just be an i18n key
 
-  switch (suite) {
-    case 'hearts':
-      cardType = 'potion';
-      break;
-    case 'diamonds':
-      cardType = 'shield';
-      break;
-    default:
-      cardType = 'enemy';
-      break;
+  if (suit === 'hearts') {
+    cardType = 'potion';
+    cardLabel = 'Potion';
+  } else if (suit === 'diamonds') {
+    cardType = 'shield';
+    cardLabel = 'Shield';
+  } else {
+    cardType = 'enemy';
+    cardLabel = 'Demon';
   }
 
-  let pointModification = number;
+  let pointModification = rank;
   if (cardType === 'enemy') {
     pointModification = -pointModification;
   }
@@ -72,17 +61,21 @@ const Card = ({ onPress, suite, number }: Props) => {
   };
 
   return (
-    <TouchableRipple onPress={handlePress}>
+    <TouchableRipple
+      onPress={handlePress}
+      accessible
+      accessibilityLabel={`${cardLabel} card, ${pointModification} points`} // TODO: i18n to have the 's' or not
+    >
       <Surface style={styles.card}>
         <View>
           <Text>{pointModification}</Text>
-          <Text>{suite}</Text>
+          <Text>{suit}</Text>
         </View>
         {CenterImage(cardType)}
-        <Text>{cardLabel(suite)}</Text>
+        <Text>{cardLabel}</Text>
       </Surface>
     </TouchableRipple>
   );
 };
 
-export default Card;
+export default PlayCard;

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import Card from './decks/Card';
+import PlayCard from './decks/PlayCard';
 import useDeck from './decks/useDeck';
 
 export enum GameModes {
@@ -43,10 +43,8 @@ const useHealth: UseHealth = () => {
 
 const Game = ({ mode }: Props) => {
   const theme = useTheme();
-  const { deck, dealt, deal } = useDeck(mode);
+  const { dealt, deal } = useDeck(mode);
   const { hp, addHealth } = useHealth();
-
-  console.log('here is a card', dealt[0], deck[0]);
 
   const handleCardPress = (hpChange: number) => {
     console.log('pressed a card');
@@ -73,11 +71,11 @@ const Game = ({ mode }: Props) => {
           }
 
           return (
-            <Card
-              key={`${card.number}-${card.suite}`}
+            <PlayCard
+              key={`${card.rank}-${card.suit}`}
               onPress={handleCardPress}
-              suite={card.suite}
-              number={card.number}
+              suit={card.suit}
+              rank={card.rank}
             />
           )
         })}
