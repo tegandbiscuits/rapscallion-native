@@ -7,28 +7,22 @@ import { shuffleArray } from '../utils';
 type Dealt = [ICard?, ICard?, ICard?, ICard?];
 
 type UseDeal = (mode: keyof typeof GameModes) => {
-  // deck: ICard[],
   dealt: Dealt,
-  // deal: () => void;
+  deal: () => void;
 }
 
+const sliceAmount = 4;
 const useDeck: UseDeal = (mode) => {
   const [deck, setDeck] = useState<ICard[]>(shuffleArray(Decks[mode]));
-  const sliceAmount = deck.length >= 4 ? 4 : deck.length;
 
-  // const deal = useCallback(() => {
-  //   console.log('dealing cards');
-  //   const newDeck = deck.slice(sliceAmount);
-  //   setDeck(newDeck);
-  // }, [setDeck, deck]);
-
-  // console.log('hook running');
-
+  const deal = useCallback(() => {
+    const newDeck = deck.slice(sliceAmount);
+    setDeck(newDeck);
+  }, [setDeck, deck]);
 
   return {
-    // deal,
+    deal,
     dealt: deck.slice(0, sliceAmount) as Dealt,
-    // deck: deck.slice(sliceAmount),
   };
 };
 

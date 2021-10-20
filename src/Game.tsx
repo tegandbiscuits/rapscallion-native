@@ -43,10 +43,8 @@ const useHealth: UseHealth = () => {
 
 const Game = ({ mode }: Props) => {
   const theme = useTheme();
-  const { deck, dealt, deal } = useDeck(mode);
+  const { dealt, deal } = useDeck(mode);
   const { hp, addHealth } = useHealth();
-
-  console.log('here is a card', dealt[0], deck[0]);
 
   const handleCardPress = (hpChange: number) => {
     console.log('pressed a card');
