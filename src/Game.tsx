@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import Card from './decks/Card';
+import PlayCard from './decks/PlayCard';
 import useDeck from './decks/useDeck';
 
 export enum GameModes {
@@ -71,7 +71,7 @@ const Game = ({ mode }: Props) => {
           }
 
           return (
-            <Card
+            <PlayCard
               key={`${card.number}-${card.suite}`}
               onPress={handleCardPress}
               suite={card.suite}
