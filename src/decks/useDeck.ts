@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { GameModes } from '../Game';
 import Decks from './decks';
-import { ICard } from './Card';
+import { IPlayCard } from './PlayCard';
 import { shuffleArray } from '../utils';
 
-type Dealt = [ICard?, ICard?, ICard?, ICard?];
+type Dealt = [IPlayCard?, IPlayCard?, IPlayCard?, IPlayCard?];
 
 type UseDeal = (mode: keyof typeof GameModes) => {
   dealt: Dealt,
@@ -13,7 +13,7 @@ type UseDeal = (mode: keyof typeof GameModes) => {
 
 const sliceAmount = 4;
 const useDeck: UseDeal = (mode) => {
-  const [deck, setDeck] = useState<ICard[]>(shuffleArray(Decks[mode]));
+  const [deck, setDeck] = useState<IPlayCard[]>(shuffleArray(Decks[mode]));
 
   const deal = useCallback(() => {
     const newDeck = deck.slice(sliceAmount);

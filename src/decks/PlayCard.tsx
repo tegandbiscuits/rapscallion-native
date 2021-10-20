@@ -8,8 +8,8 @@ import Dragon from '../icons/Dragon';
 type CardTypes = 'potion' | 'shield' | 'enemy';
 
 export interface IPlayCard {
-  suite: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds',
-  number: number
+  suit: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds',
+  rank: number
 };
 
 interface Props extends IPlayCard {
@@ -35,14 +35,14 @@ const CenterImage = (cardType: CardTypes) => {
   }
 }
 
-const PlayCard = ({ onPress, suite, number }: Props) => {
+const PlayCard = ({ onPress, suit, rank }: Props) => {
   let cardType: CardTypes;
   let cardLabel: string; // TODO: this could just be an i18n key
 
-  if (suite === 'hearts') {
+  if (suit === 'hearts') {
     cardType = 'potion';
     cardLabel = 'Potion';
-  } else if (suite === 'diamonds') {
+  } else if (suit === 'diamonds') {
     cardType = 'shield';
     cardLabel = 'Shield';
   } else {
@@ -50,7 +50,7 @@ const PlayCard = ({ onPress, suite, number }: Props) => {
     cardLabel = 'Demon';
   }
 
-  let pointModification = number;
+  let pointModification = rank;
   if (cardType === 'enemy') {
     pointModification = -pointModification;
   }
@@ -69,7 +69,7 @@ const PlayCard = ({ onPress, suite, number }: Props) => {
       <Surface style={styles.card}>
         <View>
           <Text>{pointModification}</Text>
-          <Text>{suite}</Text>
+          <Text>{suit}</Text>
         </View>
         {CenterImage(cardType)}
         <Text>{cardLabel}</Text>

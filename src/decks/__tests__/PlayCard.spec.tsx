@@ -3,8 +3,8 @@ import React from 'react';
 import PlayCard, { IPlayCard } from '../PlayCard';
 
 type TableData = [
-  IPlayCard['suite'],
-  IPlayCard['number'],
+  IPlayCard['suit'],
+  IPlayCard['rank'],
   string,
   boolean,
 ];
@@ -28,8 +28,8 @@ describe.each(testData)('PlayCard', (suit, rank, expectedKind, isPositive) => {
     component = render(
       <PlayCard
         onPress={pressEvent}
-        suite={suit}
-        number={rank}
+        suit={suit}
+        rank={rank}
       />
     );
   });

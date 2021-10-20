@@ -72,10 +72,10 @@ const Game = ({ mode }: Props) => {
 
           return (
             <PlayCard
-              key={`${card.number}-${card.suite}`}
+              key={`${card.rank}-${card.suit}`}
               onPress={handleCardPress}
-              suite={card.suite}
-              number={card.number}
+              suit={card.suit}
+              rank={card.rank}
             />
           )
         })}
