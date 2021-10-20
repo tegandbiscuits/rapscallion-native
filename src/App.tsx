@@ -33,7 +33,7 @@ export default function App() {
         <MainMenu onGameStart={() => setGameMode(GameModes.Standard)} />
       )}
 
-      {inGame && <Game mode={gameMode} />}
+      {(inGame && gameMode != null) && <Game mode={gameMode} />}
     </View>
   );
 }
