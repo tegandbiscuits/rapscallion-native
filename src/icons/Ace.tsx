@@ -1,5 +1,5 @@
-import React from 'react'
-import Svg, { SvgProps, Path } from 'react-native-svg'
+import React from 'react';
+import Svg, { SvgProps, Path } from 'react-native-svg';
 
 function SvgComponent(props: SvgProps) {
   return (
@@ -20,7 +20,7 @@ function SvgComponent(props: SvgProps) {
         d="M23 34h6v2h-6zM31 34h11v2H31zM44 34h5v2h-5zM26 38h20v2H26z"
       />
     </Svg>
-  )
+  );
 }
 
-export default SvgComponent
+export default SvgComponent;

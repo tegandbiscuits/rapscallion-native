@@ -3,14 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { Surface, Text, TouchableRipple } from 'react-native-paper';
 import Potion from '../icons/Potion';
 import Shield from '../icons/Shield';
-import Dragon from '../icons/Dragon';
 
 type CardTypes = 'potion' | 'shield' | 'enemy';
 
 export interface IPlayCard {
   suit: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds',
   rank: number
-};
+}
 
 interface Props extends IPlayCard {
   onPress: (hpChange: number) => void;
@@ -33,7 +32,7 @@ const CenterImage = (cardType: CardTypes) => {
     default:
       return <Text>(dragon was jank)</Text>;
   }
-}
+};
 
 const PlayCard = ({ onPress, suit, rank }: Props) => {
   let cardType: CardTypes;

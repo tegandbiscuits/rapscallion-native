@@ -30,7 +30,7 @@ describe.each(testData)('PlayCard', (suit, rank, expectedKind, isPositive) => {
         onPress={pressEvent}
         suit={suit}
         rank={rank}
-      />
+      />,
     );
   });
 
@@ -56,7 +56,7 @@ describe.each(testData)('PlayCard', (suit, rank, expectedKind, isPositive) => {
 
     expect(component.queryByA11yLabel(label)).toBeTruthy();
     // TODO: should this say like "Press to fight/heal/restore shield"
-  })
+  });
 
   it('can do stuff when pressed', () => {
     fireEvent.press(component.getByText(expectedKind));

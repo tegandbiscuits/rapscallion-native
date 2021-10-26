@@ -149,7 +149,7 @@ function SvgComponent(props: SvgProps) {
         </G>
       </G>
     </Svg>
-  )
+  );
 }
 
-export default SvgComponent
+export default SvgComponent;

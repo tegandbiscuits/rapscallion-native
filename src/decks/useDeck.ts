@@ -9,7 +9,7 @@ type Dealt = [IPlayCard?, IPlayCard?, IPlayCard?, IPlayCard?];
 type UseDeal = (mode: keyof typeof GameModes) => {
   dealt: Dealt,
   deal: () => void;
-}
+};
 
 const sliceAmount = 4;
 const useDeck: UseDeal = (mode) => {
