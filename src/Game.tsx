@@ -77,7 +77,7 @@ const Game = ({ mode }: Props) => {
               suit={card.suit}
               rank={card.rank}
             />
-          )
+          );
         })}
       </View>
     </View>

@@ -26,7 +26,7 @@ describe(useDeck, () => {
     const { result } = renderHook(() => useDeck(GameModes.Standard));
     const { dealt } = result.current;
     expect(dealt).toHaveLength(4);
-    expect(dealt.map((c) => c!.rank)).toEqual([1, 2, 3, 4])
+    expect(dealt.map((c) => c!.rank)).toEqual([1, 2, 3, 4]);
   });
 
   it('can deal the next 4 cards', () => {
@@ -35,7 +35,7 @@ describe(useDeck, () => {
 
     act(() => deal());
 
-    expect(result.current.dealt.map((c) => c!.rank)).toEqual([5, 6, 7, 8])
+    expect(result.current.dealt.map((c) => c!.rank)).toEqual([5, 6, 7, 8]);
   });
 
   describe('when the deck is less than 4', () => {
@@ -47,7 +47,7 @@ describe(useDeck, () => {
     });
 
     it('deals a smaller amount of cards', () => {
-      act(() => result.current.deal())
+      act(() => result.current.deal());
       expect(result.current.dealt.map((c) => c!.rank)).toEqual([9]);
     });
 

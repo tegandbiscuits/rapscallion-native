@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, useTheme } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import Knot from './icons/Knot';
 
 interface Props {
@@ -14,8 +14,6 @@ const styles = StyleSheet.create({
 });
 
 const MainMenu = ({ onGameStart }: Props) => {
-  const theme = useTheme();
-
   return (
     <View style={styles.container}>
       <Knot width={150} height={150} />
