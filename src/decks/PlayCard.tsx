@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   card: {
     width: 150,
     height: 200,
-    marginHorizontal: 5,
+    margin: 5,
   },
 });
 

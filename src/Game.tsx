@@ -15,6 +15,8 @@ interface Props {
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
 });
 
