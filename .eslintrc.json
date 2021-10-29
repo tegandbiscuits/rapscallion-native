@@ -24,6 +24,12 @@
   ],
   "overrides": [
     {
+      "files": ["src/state/*.ts"],
+      "rules": {
+        "import/no-named-as-default": "off"
+      }
+    },
+    {
       "files": ["*.spec.ts"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"

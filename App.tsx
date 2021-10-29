@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { Provider as ReduxProvider } from 'react-redux';
 import Game from './src/App';
+import { store } from './src/state/store';
 
 const theme: typeof DefaultTheme = {
   ...DefaultTheme,
@@ -17,9 +19,11 @@ const theme: typeof DefaultTheme = {
 
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <Game />
-      <StatusBar style="light" />
-    </PaperProvider>
+    <ReduxProvider store={store}>
+      <PaperProvider theme={theme}>
+        <Game />
+        <StatusBar style="light" />
+      </PaperProvider>
+    </ReduxProvider>
   );
 }
