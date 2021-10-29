@@ -90,6 +90,7 @@ const SuitImage = ({
   return (
     <MaterialCommunityIcons
       style={style}
+      accessibilityLabel={suit}
       // @ts-expect-error unable to ensure name is set more specific than string
       name={suitName}
     />
