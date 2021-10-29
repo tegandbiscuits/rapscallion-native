@@ -43,7 +43,6 @@ describe.each(testData)('PlayCard', (suit, rank, expectedKind, isPositive) => {
     }
 
     expect(component.queryByText(expectedPoints)).toBeTruthy();
-    expect(component.queryByText(suit)).toBeTruthy();
   });
 
   it('displays the kind in the game', () => {

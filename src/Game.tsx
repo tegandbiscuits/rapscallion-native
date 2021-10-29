@@ -15,6 +15,24 @@ interface Props {
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  progress: {
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  roomActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  roomAction: {
+    width: '49%',
+  },
+  stats: {
+    alignItems: 'center',
+    marginBottom: 16,
   },
 });
 
@@ -54,14 +72,29 @@ const Game = ({ mode }: Props) => {
   return (
     <View>
       <View>
-        <Text>The Game</Text>
-        <Button mode="outlined" onPress={() => deal()}>
-          Run
-        </Button>
-
-        <Text style={{ color: theme.colors.primary }}>
-          HP: {hp}
+        <Text style={styles.progress}>
+          Progress: 44
         </Text>
+
+        <View style={styles.roomActions}>
+          <Button mode="outlined" disabled style={styles.roomAction}>
+            Next Room
+          </Button>
+
+          <Button mode="outlined" onPress={() => deal()} style={styles.roomAction}>
+            Run
+          </Button>
+        </View>
+
+        <View style={styles.stats}>
+          <Text style={{ color: theme.colors.primary }}>
+            HP: {hp} • Shield: 0/0
+          </Text>
+          <Text>
+            XP: 0 • Potions sickness: 0
+          </Text>
+        </View>
+
       </View>
 
       <View style={styles.cardContainer}>
