@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard from './decks/PlayCard';
-import useDeck from './decks/useDeck';
+import { dealRoom } from './state/deckSlice';
 import { addHealth } from './state/playerSlice';
 import { RootState } from './state/store';
 
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 
 const Game = ({ mode }: Props) => {
   const theme = useTheme();
-  const { dealt, deal } = useDeck(mode);
+  const { room } = useSelector((state: RootState) => state.deck);
   const {
     progress,
     hp,
@@ -68,7 +68,7 @@ const Game = ({ mode }: Props) => {
             Next Room
           </Button>
 
-          <Button mode="outlined" onPress={() => deal()} style={styles.roomAction}>
+          <Button mode="outlined" onPress={() => dispatch(dealRoom())} style={styles.roomAction}>
             Run
           </Button>
         </View>
@@ -85,7 +85,7 @@ const Game = ({ mode }: Props) => {
       </View>
 
       <View style={styles.cardContainer}>
-        {dealt.map((card) => {
+        {room.map((card) => {
           if (!card) {
             return null;
           }

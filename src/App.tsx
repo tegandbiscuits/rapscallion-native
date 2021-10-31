@@ -6,6 +6,9 @@ import {
 import { Headline, useTheme } from 'react-native-paper';
 import MainMenu from './MainMenu';
 import Game, { GameModes } from './Game';
+import { useDispatch } from 'react-redux';
+import { shuffleDeck } from './state/deckSlice';
+import Decks from './decks/decks';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +25,12 @@ export default function App() {
   const theme = useTheme();
   const [gameMode, setGameMode] = useState<GameModes | null>(null);
   const inGame = !!gameMode;
+  const dispatch = useDispatch();
+
+  const startGame = () => {
+    dispatch(shuffleDeck(Decks.Standard));
+    setGameMode(GameModes.Standard);
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -30,7 +39,7 @@ export default function App() {
       </Headline>
 
       {!inGame && (
-        <MainMenu onGameStart={() => setGameMode(GameModes.Standard)} />
+        <MainMenu onGameStart={startGame} />
       )}
 
       {(inGame && gameMode != null) && <Game mode={gameMode} />}

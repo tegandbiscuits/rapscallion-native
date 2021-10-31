@@ -10,6 +10,7 @@ type CardTypes = 'potion' | 'shield' | 'enemy';
 export interface IPlayCard {
   suit: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds',
   rank: number
+  played?: boolean;
 }
 
 interface Props extends IPlayCard {
