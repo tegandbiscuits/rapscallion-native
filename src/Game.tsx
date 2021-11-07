@@ -11,10 +11,6 @@ export enum GameModes {
   Standard = 'Standard',
 }
 
-interface Props {
-  mode: keyof typeof GameModes;
-}
-
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
@@ -39,9 +35,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const Game = ({ mode }: Props) => {
+const Game = () => {
   const theme = useTheme();
-  const { room } = useSelector((state: RootState) => state.deck);
+  const {
+    room,
+    justRan,
+  } = useSelector((state: RootState) => state.deck);
   const {
     progress,
     hp,
@@ -68,7 +67,12 @@ const Game = ({ mode }: Props) => {
             Next Room
           </Button>
 
-          <Button mode="outlined" onPress={() => dispatch(dealRoom())} style={styles.roomAction}>
+          <Button
+            mode="outlined"
+            disabled={justRan}
+            onPress={() => dispatch(dealRoom({ didRun: true }))}
+            style={styles.roomAction}
+          >
             Run
           </Button>
         </View>
@@ -81,7 +85,6 @@ const Game = ({ mode }: Props) => {
             XP: {xp} • Potions sickness: {potionSickness}
           </Text>
         </View>
-
       </View>
 
       <View style={styles.cardContainer}>

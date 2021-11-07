@@ -18,11 +18,15 @@ const initialState: PlayerState = {
   potionSickness: 0,
 };
 
-export const playerSlice = createSlice({
+const playerSlice = createSlice({
   initialState,
   name: 'player',
   reducers: {
     addHealth(state, action: PayloadAction<number>) {
+      if (state.potionSickness > 0) {
+        return;
+      }
+
       const desiredHp = state.hp + action.payload;
       let newHp = desiredHp;
 
@@ -33,6 +37,10 @@ export const playerSlice = createSlice({
       }
 
       state.hp = newHp;
+
+      if (action.payload > 0) {
+        state.potionSickness += 1;
+      }
     },
   },
 });

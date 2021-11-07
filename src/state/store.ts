@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import deckSlice from './deckSlice';
 import playerSlice from './playerSlice';
 
+export const rootReducers = {
+  deck: deckSlice,
+  player: playerSlice,
+};
+
 export const store = configureStore({
-  reducer: {
-    deck: deckSlice,
-    player: playerSlice,
-  },
+  reducer: rootReducers,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

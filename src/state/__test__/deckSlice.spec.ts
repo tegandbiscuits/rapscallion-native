@@ -54,7 +54,7 @@ describe('deckSlice', () => {
 
   describe('dealRoom', () => {
     it('can deal another room', () => {
-      const newState = reducer(initialState, dealRoom());
+      const newState = reducer(initialState, dealRoom({}));
       expect(newState).toEqual(expect.objectContaining({
         room: [
           fiveOfClubs,
@@ -67,7 +67,7 @@ describe('deckSlice', () => {
 
     it('puts the unplayed cards in the room back in the deck', () => {
       initialState.room[1]!.played = true;
-      const newState = reducer(initialState, dealRoom());
+      const newState = reducer(initialState, dealRoom({}));
       expect(newState).toEqual(expect.objectContaining({
         dungeon: [
           nineOfClubs,
