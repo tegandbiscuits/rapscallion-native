@@ -28,7 +28,7 @@ describe('playerSlice', () => {
     });
 
     it('prevents the HP from going below 0', () => {
-      initialState.hp = .1;
+      initialState.hp = 0.1;
       const newState = reducer(initialState, addHealth(-10));
       expect(newState).toEqual(expect.objectContaining({ hp: 0 }));
     });

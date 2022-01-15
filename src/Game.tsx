@@ -59,7 +59,8 @@ const Game = () => {
     <View>
       <View>
         <Text style={styles.progress}>
-          Progress: {progress}
+          Progress:
+          {progress}
         </Text>
 
         <View style={styles.roomActions}>
@@ -79,10 +80,21 @@ const Game = () => {
 
         <View style={styles.stats}>
           <Text style={{ color: theme.colors.primary }}>
-            HP: {hp} • Shield: {shield}/{shieldRank}
+            HP:
+            {hp}
+            •
+            Shield:
+            {shield}
+            /
+            {shieldRank}
           </Text>
           <Text>
-            XP: {xp} • Potions sickness: {potionSickness}
+            XP:
+            {xp}
+            •
+            Potions
+            sickness:
+            {potionSickness}
           </Text>
         </View>
       </View>

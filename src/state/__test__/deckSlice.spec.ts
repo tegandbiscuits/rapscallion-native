@@ -4,7 +4,7 @@ import reducer, { DeckState, dealRoom, shuffleDeck } from '../deckSlice';
 
 describe('deckSlice', () => {
   let initialState: DeckState;
-  
+
   let oneOfClubs: IPlayCard;
   let twoOfClubs: IPlayCard;
   let threeOfClubs: IPlayCard;
@@ -27,6 +27,7 @@ describe('deckSlice', () => {
     nineOfClubs = { suit: 'clubs', rank: 9 };
 
     initialState = {
+      justRan: false,
       room: [
         oneOfClubs,
         twoOfClubs,

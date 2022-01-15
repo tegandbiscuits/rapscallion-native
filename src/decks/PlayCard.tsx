@@ -1,6 +1,16 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
-import { Surface, Text, TouchableRipple, Colors } from 'react-native-paper';
+import {
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  View,
+} from 'react-native';
+import {
+  Surface,
+  Text,
+  TouchableRipple,
+  Colors,
+} from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Potion from '../icons/Potion';
 import Shield from '../icons/Shield';

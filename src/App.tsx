@@ -4,9 +4,9 @@ import {
   View,
 } from 'react-native';
 import { Headline, useTheme } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 import MainMenu from './MainMenu';
 import Game, { GameModes } from './Game';
-import { useDispatch } from 'react-redux';
 import { shuffleDeck } from './state/deckSlice';
 import Decks from './decks/decks';
 
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function App() {
+const App = () => {
   const theme = useTheme();
   const [gameMode, setGameMode] = useState<GameModes | null>(null);
   const inGame = !!gameMode;
@@ -42,7 +42,9 @@ export default function App() {
         <MainMenu onGameStart={startGame} />
       )}
 
-      {(inGame && gameMode != null) && <Game mode={gameMode} />}
+      {(inGame && gameMode != null) && <Game />}
     </View>
   );
-}
+};
+
+export default App;

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { GameModes } from '../Game';
 import { IPlayCard } from './PlayCard';
 

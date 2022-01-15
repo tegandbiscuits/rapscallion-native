@@ -1,11 +1,11 @@
 import React from 'react';
 import { fireEvent, render, RenderAPI } from '@testing-library/react-native';
 import { Provider as ReduxProvider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 import Game from '../Game';
 import Decks from '../decks/decks';
 import { IPlayCard } from '../decks/PlayCard';
 import { shuffleDeck } from '../state/deckSlice';
-import { configureStore } from '@reduxjs/toolkit';
 import { rootReducers } from '../state/store';
 
 jest.mock('../utils', () => ({
@@ -121,7 +121,7 @@ describe(Game, () => {
       expect(component.queryByText(/HP: 21/)).toBeTruthy();
       expect(component.queryByText(/HP: 17/)).toBeFalsy();
 
-      fireEvent.press(component.queryByA11yLabel('Demon card, -4 points'));
+      fireEvent.press(component.getByA11yLabel('Demon card, -4 points'));
 
       expect(component.queryByText(/HP: 21/)).toBeFalsy();
       expect(component.queryByText(/HP: 17/)).toBeTruthy();

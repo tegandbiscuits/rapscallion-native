@@ -17,13 +17,14 @@ const theme: typeof DefaultTheme = {
   },
 };
 
-export default function App() {
-  return (
-    <ReduxProvider store={store}>
-      <PaperProvider theme={theme}>
-        <Game />
-        <StatusBar style="light" />
-      </PaperProvider>
-    </ReduxProvider>
-  );
-}
+const App = () => (
+  <ReduxProvider store={store}>
+    <PaperProvider theme={theme}>
+      <Game />
+      {/* eslint-disable-next-line react/style-prop-object */}
+      <StatusBar style="light" />
+    </PaperProvider>
+  </ReduxProvider>
+);
+
+export default App;

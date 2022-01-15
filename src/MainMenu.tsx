@@ -13,15 +13,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const MainMenu = ({ onGameStart }: Props) => {
-  return (
-    <View style={styles.container}>
-      <Knot width={150} height={150} />
-      <Button mode="outlined" onPress={onGameStart}>
-        Standard
-      </Button>
-    </View>
-  );
-};
+const MainMenu = ({ onGameStart }: Props) => (
+  <View style={styles.container}>
+    <Knot width={150} height={150} />
+    <Button mode="outlined" onPress={onGameStart}>
+      Standard
+    </Button>
+  </View>
+);
 
 export default MainMenu;
