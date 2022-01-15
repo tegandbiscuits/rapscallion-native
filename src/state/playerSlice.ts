@@ -23,7 +23,8 @@ const playerSlice = createSlice({
   name: 'player',
   reducers: {
     addHealth(state, action: PayloadAction<number>) {
-      if (state.potionSickness > 0) {
+      const isPotionCard = action.payload > 0;
+      if (isPotionCard && state.potionSickness > 0) {
         return;
       }
 

@@ -133,6 +133,7 @@ describe(Game, () => {
       component.unmount();
       component = renderGame([
         { suit: 'clubs', rank: 10 },
+        { suit: 'clubs', rank: 5 },
         { suit: 'hearts', rank: 2 },
         { suit: 'hearts', rank: 3 },
       ]);
@@ -157,6 +158,14 @@ describe(Game, () => {
       fireEvent.press(component.getByA11yLabel('Potion card, 3 points'));
       expect(component.queryByText(/HP: 16/)).toBeFalsy();
       expect(component.queryByText(/HP: 13/)).toBeTruthy();
+    });
+
+    it('can fight a monster after taking a potion', () => {
+      fireEvent.press(component.getByA11yLabel('Potion card, 2 points'));
+      expect(component.queryByText(/HP: 13/)).toBeTruthy();
+
+      fireEvent.press(component.getByA11yLabel('Demon card, -5 points'));
+      expect(component.queryByText(/HP: 8/)).toBeTruthy();
     });
 
     it.todo('can add additional potion cards in the next room');
