@@ -18,13 +18,13 @@ import Shield from '../icons/Shield';
 type CardTypes = 'potion' | 'shield' | 'enemy';
 
 export interface IPlayCard {
-  suit: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds',
-  rank: number
+  suit: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds';
+  rank: number;
   played?: boolean;
 }
 
 interface Props extends IPlayCard {
-  onPress: (hpChange: number) => void;
+  onPress: (event: { hpChange: number, card: IPlayCard }) => void;
 }
 
 const cardImageSize = 120;
@@ -132,7 +132,8 @@ const PlayCard = ({ onPress, suit, rank }: Props) => {
 
   const handlePress = () => {
     const hpChange = cardType !== 'shield' ? pointModification : 0;
-    onPress(hpChange);
+    const card = { suit, rank };
+    onPress({ hpChange, card });
   };
 
   return (

@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import PlayCard from './decks/PlayCard';
-import { dealRoom } from './state/deckSlice';
+import PlayCard, { IPlayCard } from './decks/PlayCard';
+import { dealRoom, playCard } from './state/deckSlice';
 import { addHealth } from './state/playerSlice';
 import { RootState } from './state/store';
 
@@ -50,9 +50,17 @@ const Game = () => {
     potionSickness,
   } = useSelector((state: RootState) => state.player);
   const dispatch = useDispatch();
+  const cardsPlayedCount = room.reduce((count, card) => {
+    if (card?.played) {
+      return count + 1;
+    }
 
-  const handleCardPress = (hpChange: number) => {
-    dispatch(addHealth(hpChange));
+    return count;
+  }, 0);
+
+  const handleCardPress = (event: { hpChange: number, card: IPlayCard }) => {
+    dispatch(playCard(event.card));
+    dispatch(addHealth(event.hpChange));
   };
 
   return (
@@ -64,7 +72,12 @@ const Game = () => {
         </Text>
 
         <View style={styles.roomActions}>
-          <Button mode="outlined" disabled style={styles.roomAction}>
+          <Button
+            mode="outlined"
+            disabled={cardsPlayedCount < 3}
+            style={styles.roomAction}
+            onPress={() => dispatch(dealRoom({ didRun: false }))}
+          >
             Next Room
           </Button>
 

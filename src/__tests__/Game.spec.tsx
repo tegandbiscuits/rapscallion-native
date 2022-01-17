@@ -3,7 +3,6 @@ import { fireEvent, render, RenderAPI } from '@testing-library/react-native';
 import { Provider as ReduxProvider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import Game from '../Game';
-import Decks from '../decks/decks';
 import { IPlayCard } from '../decks/PlayCard';
 import { shuffleDeck } from '../state/deckSlice';
 import { rootReducers } from '../state/store';
@@ -28,27 +27,48 @@ const renderGame = (deck: IPlayCard[]): RenderAPI => {
 describe(Game, () => {
   let component: RenderAPI;
 
-  beforeEach(() => {
-    component = renderGame(Decks.Standard);
+  describe('playing cards', () => {
+    beforeEach(() => {
+      component = renderGame([
+        { suit: 'clubs', rank: 1 },
+        { suit: 'clubs', rank: 2 },
+        { suit: 'hearts', rank: 2 },
+        { suit: 'hearts', rank: 3 },
+        { suit: 'clubs', rank: 5 },
+      ]);
+    });
+
+    it('can render', () => {
+      const text = component.queryByText('Progress: 44');
+      expect(text).toBeTruthy();
+    });
+
+    it('presents four cards', () => {
+      const cards = component.queryAllByA11yLabel(/\w+ card, -?\d+ points/);
+      expect(cards).toHaveLength(4);
+    });
+
+    it('has to play three cards to go to the next room', () => {
+      expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(4);
+      fireEvent.press(component.getByText('Next Room'));
+      expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(4);
+
+      fireEvent.press(component.getByA11yLabel('Demon card, -1 points'));
+      fireEvent.press(component.getByA11yLabel('Demon card, -2 points'));
+      fireEvent.press(component.getByA11yLabel('Potion card, 2 points'));
+
+      expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(4);
+      fireEvent.press(component.getByText('Next Room'));
+      expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(2);
+    });
+
+    it.todo('can not play cards multiple times');
+
+    it.todo('adds unplayed cards to the deck');
   });
-
-  it('can render', () => {
-    const text = component.queryByText('Progress: 44');
-    expect(text).toBeTruthy();
-  });
-
-  it('presents four cards', () => {
-    const cards = component.queryAllByA11yLabel(/\w+ card, -?\d+ points/);
-    expect(cards).toHaveLength(4);
-  });
-
-  it.todo('has to play three cards to go to the next room');
-
-  it.todo('can not play cards multiple times');
 
   describe('running', () => {
     beforeEach(() => {
-      component.unmount();
       component = renderGame([
         { suit: 'clubs', rank: 1 },
         { suit: 'clubs', rank: 2 },
@@ -111,7 +131,6 @@ describe(Game, () => {
 
   describe('monster cards', () => {
     beforeEach(() => {
-      component.unmount();
       component = renderGame([
         { suit: 'clubs', rank: 4 },
       ]);
@@ -130,7 +149,6 @@ describe(Game, () => {
 
   describe('potion cards', () => {
     beforeEach(() => {
-      component.unmount();
       component = renderGame([
         { suit: 'clubs', rank: 10 },
         { suit: 'clubs', rank: 5 },
