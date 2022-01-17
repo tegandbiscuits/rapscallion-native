@@ -65,6 +65,12 @@ describe(Game, () => {
     it.todo('can not play cards multiple times');
 
     it.todo('adds unplayed cards to the deck');
+
+    it.todo('ends the game when the player runs out of HP');
+
+    it.todo('ends the game when there are no unplayed cards');
+
+    it.todo('track progress remaining');
   });
 
   describe('running', () => {
