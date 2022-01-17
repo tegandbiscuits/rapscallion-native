@@ -108,7 +108,12 @@ const SuitImage = ({
   );
 };
 
-const PlayCard = ({ onPress, suit, rank }: Props) => {
+const PlayCard = ({
+  onPress,
+  suit,
+  rank,
+  played,
+}: Props) => {
   let cardType: CardTypes;
   let cardLabel: string; // TODO: this could just be an i18n key
 
@@ -141,6 +146,7 @@ const PlayCard = ({ onPress, suit, rank }: Props) => {
       onPress={handlePress}
       accessible
       accessibilityLabel={`${cardLabel} card, ${pointModification} points`} // TODO: i18n to have the 's' or not
+      disabled={played}
     >
       <Surface style={styles.card}>
         <View style={styles.cardInfo}>

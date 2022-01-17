@@ -115,6 +115,7 @@ const Game = () => {
               onPress={handleCardPress}
               suit={card.suit}
               rank={card.rank}
+              played={card.played}
             />
           );
         })}

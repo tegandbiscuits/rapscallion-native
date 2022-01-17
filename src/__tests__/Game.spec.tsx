@@ -62,7 +62,16 @@ describe(Game, () => {
       expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(2);
     });
 
-    it.todo('can not play cards multiple times');
+    it('can not play cards multiple times', () => {
+      expect(component.queryByText(/HP: 21/)).toBeTruthy();
+      fireEvent.press(component.getByA11yLabel('Demon card, -1 points'));
+      expect(component.queryByText(/HP: 21/)).toBeFalsy();
+      expect(component.queryByText(/HP: 20/)).toBeTruthy();
+
+      fireEvent.press(component.getByA11yLabel('Demon card, -1 points'));
+      expect(component.queryByText(/HP: 19/)).toBeFalsy();
+      expect(component.queryByText(/HP: 20/)).toBeTruthy();
+    });
 
     it.todo('adds unplayed cards to the deck');
 
