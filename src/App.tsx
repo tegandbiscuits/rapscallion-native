@@ -7,7 +7,7 @@ import { Headline, useTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import MainMenu from './MainMenu';
 import Game, { GameModes } from './Game';
-import { shuffleDeck } from './state/deckSlice';
+import { shuffleDeck } from './state/gameSlice';
 import Decks from './decks/decks';
 
 const styles = StyleSheet.create({

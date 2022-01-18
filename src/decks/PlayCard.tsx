@@ -18,13 +18,13 @@ import Shield from '../icons/Shield';
 type CardTypes = 'potion' | 'shield' | 'enemy';
 
 export interface IPlayCard {
-  suit: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds',
-  rank: number
+  suit: 'joker' | 'jack' | 'spades' | 'hearts' | 'clubs' | 'diamonds';
+  rank: number;
   played?: boolean;
 }
 
 interface Props extends IPlayCard {
-  onPress: (hpChange: number) => void;
+  onPress: (event: { hpChange: number, card: IPlayCard }) => void;
 }
 
 const cardImageSize = 120;
@@ -108,7 +108,12 @@ const SuitImage = ({
   );
 };
 
-const PlayCard = ({ onPress, suit, rank }: Props) => {
+const PlayCard = ({
+  onPress,
+  suit,
+  rank,
+  played,
+}: Props) => {
   let cardType: CardTypes;
   let cardLabel: string; // TODO: this could just be an i18n key
 
@@ -132,7 +137,8 @@ const PlayCard = ({ onPress, suit, rank }: Props) => {
 
   const handlePress = () => {
     const hpChange = cardType !== 'shield' ? pointModification : 0;
-    onPress(hpChange);
+    const card = { suit, rank };
+    onPress({ hpChange, card });
   };
 
   return (
@@ -140,6 +146,7 @@ const PlayCard = ({ onPress, suit, rank }: Props) => {
       onPress={handlePress}
       accessible
       accessibilityLabel={`${cardLabel} card, ${pointModification} points`} // TODO: i18n to have the 's' or not
+      disabled={played}
     >
       <Surface style={styles.card}>
         <View style={styles.cardInfo}>

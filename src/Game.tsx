@@ -2,9 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import PlayCard from './decks/PlayCard';
-import { dealRoom } from './state/deckSlice';
-import { addHealth } from './state/playerSlice';
+import PlayCard, { IPlayCard } from './decks/PlayCard';
+import { dealRoom, playCard, addHealth } from './state/gameSlice';
 import { RootState } from './state/store';
 
 export enum GameModes {
@@ -40,20 +39,28 @@ const Game = () => {
   const {
     room,
     justRan,
-  } = useSelector((state: RootState) => state.deck);
-  const {
     progress,
     hp,
     shield,
     shieldRank,
     xp,
     potionSickness,
-  } = useSelector((state: RootState) => state.player);
+  } = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
+  const cardsPlayedCount = room.reduce((count, card) => {
+    if (card?.played) {
+      return count + 1;
+    }
 
-  const handleCardPress = (hpChange: number) => {
-    dispatch(addHealth(hpChange));
+    return count;
+  }, 0);
+
+  const handleCardPress = (event: { hpChange: number, card: IPlayCard }) => {
+    dispatch(playCard(event.card));
+    dispatch(addHealth(event.hpChange));
   };
+
+  const unableToRun = justRan || cardsPlayedCount !== 0;
 
   return (
     <View>
@@ -64,13 +71,18 @@ const Game = () => {
         </Text>
 
         <View style={styles.roomActions}>
-          <Button mode="outlined" disabled style={styles.roomAction}>
+          <Button
+            mode="outlined"
+            disabled={cardsPlayedCount < 3}
+            style={styles.roomAction}
+            onPress={() => dispatch(dealRoom({ didRun: false }))}
+          >
             Next Room
           </Button>
 
           <Button
             mode="outlined"
-            disabled={justRan}
+            disabled={unableToRun}
             onPress={() => dispatch(dealRoom({ didRun: true }))}
             style={styles.roomAction}
           >
@@ -102,6 +114,7 @@ const Game = () => {
               onPress={handleCardPress}
               suit={card.suit}
               rank={card.rank}
+              played={card.played}
             />
           );
         })}
