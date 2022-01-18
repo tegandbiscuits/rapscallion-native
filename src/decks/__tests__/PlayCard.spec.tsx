@@ -70,6 +70,9 @@ describe.each(testData)('PlayCard', (suit, rank, expectedKind, isPositive) => {
       expectedHpChange = -rank;
     }
 
-    expect(pressEvent).toHaveBeenCalledWith(expectedHpChange);
+    expect(pressEvent).toHaveBeenCalledWith({
+      hpChange: expectedHpChange,
+      card: { suit, rank },
+    });
   });
 });
