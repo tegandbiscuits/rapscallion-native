@@ -3,8 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
-import { dealRoom, playCard } from './state/deckSlice';
-import { addHealth } from './state/playerSlice';
+import { dealRoom, playCard, addHealth } from './state/gameSlice';
 import { RootState } from './state/store';
 
 export enum GameModes {
@@ -40,15 +39,13 @@ const Game = () => {
   const {
     room,
     justRan,
-  } = useSelector((state: RootState) => state.deck);
-  const {
     progress,
     hp,
     shield,
     shieldRank,
     xp,
     potionSickness,
-  } = useSelector((state: RootState) => state.player);
+  } = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
   const cardsPlayedCount = room.reduce((count, card) => {
     if (card?.played) {

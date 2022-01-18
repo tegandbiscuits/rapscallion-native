@@ -2,21 +2,33 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IPlayCard } from '../decks/PlayCard';
 import { shuffleArray } from '../utils';
 
-export interface DeckState {
+export interface GameState {
   room: [IPlayCard?, IPlayCard?, IPlayCard?, IPlayCard?];
   dungeon: IPlayCard[];
   justRan: boolean;
+  progress: number;
+  hp: number;
+  shield: number;
+  shieldRank: number;
+  xp: number;
+  potionSickness: number;
 }
 
-const initialState: DeckState = {
+const initialState: GameState = {
   room: [],
   dungeon: [],
   justRan: false,
+  progress: 44,
+  hp: 21,
+  shield: 0,
+  shieldRank: 0,
+  xp: 0,
+  potionSickness: 0,
 };
 
-const deckSlice = createSlice({
+const gameSlice = createSlice({
   initialState,
-  name: 'deck',
+  name: 'game',
   reducers: {
     playCard(state, action: PayloadAction<IPlayCard>) {
       const index = state.room.findIndex((c) => {
@@ -40,7 +52,7 @@ const deckSlice = createSlice({
     dealRoom(state, action: PayloadAction<{ didRun?: boolean }>) {
       const unplayedCards = state.room.filter((c) => !c?.played);
       state.dungeon = state.dungeon.concat((unplayedCards as IPlayCard[]));
-      state.room = state.dungeon.splice(0, 4) as DeckState['room'];
+      state.room = state.dungeon.splice(0, 4) as GameState['room'];
       state.justRan = !!action.payload.didRun;
     },
 
@@ -50,8 +62,35 @@ const deckSlice = createSlice({
       state.room = [a, b, c, d];
       state.dungeon = rest;
     },
+
+    addHealth(state, action: PayloadAction<number>) {
+      const isPotionCard = action.payload > 0;
+      if (isPotionCard && state.potionSickness > 0) {
+        return;
+      }
+
+      const desiredHp = state.hp + action.payload;
+      let newHp = desiredHp;
+
+      if (desiredHp > 21) {
+        newHp = 21;
+      } else if (desiredHp < 0) {
+        newHp = 0;
+      }
+
+      state.hp = newHp;
+
+      if (action.payload > 0) {
+        state.potionSickness += 1;
+      }
+    },
   },
 });
 
-export const { dealRoom, shuffleDeck, playCard } = deckSlice.actions;
-export default deckSlice.reducer;
+export const {
+  dealRoom,
+  shuffleDeck,
+  playCard,
+  addHealth,
+} = gameSlice.actions;
+export default gameSlice.reducer;

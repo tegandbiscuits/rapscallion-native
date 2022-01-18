@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import deckSlice from './deckSlice';
-import playerSlice from './playerSlice';
+import gameSlice from './gameSlice';
 
 export const rootReducers = {
-  deck: deckSlice,
-  player: playerSlice,
+  game: gameSlice,
 };
 
 export const store = configureStore({

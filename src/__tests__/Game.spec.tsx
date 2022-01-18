@@ -4,7 +4,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import Game from '../Game';
 import { IPlayCard } from '../decks/PlayCard';
-import { shuffleDeck } from '../state/deckSlice';
+import { shuffleDeck } from '../state/gameSlice';
 import { rootReducers } from '../state/store';
 
 jest.mock('../utils', () => ({
