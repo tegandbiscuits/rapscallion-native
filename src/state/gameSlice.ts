@@ -54,6 +54,7 @@ const gameSlice = createSlice({
       state.dungeon = state.dungeon.concat((unplayedCards as IPlayCard[]));
       state.room = state.dungeon.splice(0, 4) as GameState['room'];
       state.justRan = !!action.payload.didRun;
+      state.potionSickness = 0;
     },
 
     shuffleDeck(state, action: PayloadAction<IPlayCard[]>) {

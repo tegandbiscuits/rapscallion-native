@@ -201,6 +201,7 @@ describe(Game, () => {
         { suit: 'clubs', rank: 5 },
         { suit: 'hearts', rank: 2 },
         { suit: 'hearts', rank: 3 },
+        { suit: 'hearts', rank: 4 },
       ]);
 
       fireEvent.press(component.getByA11yLabel('Demon card, -10 points'));
@@ -233,7 +234,19 @@ describe(Game, () => {
       expect(component.queryByText(/HP: 8/)).toBeTruthy();
     });
 
-    it.todo('can add additional potion cards in the next room');
+    it('can add additional potion cards in the next room', () => {
+      fireEvent.press(component.getByA11yLabel('Demon card, -5 points'));
+      fireEvent.press(component.getByA11yLabel('Potion card, 2 points'));
+
+      expect(component.queryByText(/HP: 8/)).toBeTruthy();
+      expect(component.queryByA11yLabel('Potion card, 4 points')).toBeFalsy();
+      fireEvent.press(component.getByText('Next Room'));
+      expect(component.queryByA11yLabel('Potion card, 4 points')).toBeTruthy();
+
+      expect(component.queryByText(/HP: 12/)).toBeFalsy();
+      fireEvent.press(component.getByA11yLabel('Potion card, 4 points'));
+      expect(component.queryByText(/HP: 12/)).toBeTruthy();
+    });
   });
 
   describe('shield cards', () => {
