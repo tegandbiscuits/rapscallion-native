@@ -152,7 +152,28 @@ describe(Game, () => {
       expect(component.queryByA11yLabel('Demon card, -8 points')).toBeTruthy();
     });
 
-    it.todo('can be done after not running a round');
+    it('can be done after not running a round', () => {
+      expect(component.queryByA11yLabel('Demon card, -1 points')).toBeTruthy();
+      expect(component.queryByA11yLabel('Demon card, -5 points')).toBeFalsy();
+
+      fireEvent.press(component.getByText('Run'));
+      expect(component.queryByA11yLabel('Demon card, -1 points')).toBeFalsy();
+      expect(component.queryByA11yLabel('Demon card, -5 points')).toBeTruthy();
+
+      fireEvent.press(component.getByText('Run'));
+      expect(component.queryByA11yLabel('Demon card, -5 points')).toBeTruthy();
+
+      fireEvent.press(component.getByA11yLabel('Demon card, -5 points'));
+      fireEvent.press(component.getByA11yLabel('Demon card, -6 points'));
+      fireEvent.press(component.getByA11yLabel('Demon card, -7 points'));
+      expect(component.queryByA11yLabel('Demon card, -9 points')).toBeFalsy();
+      fireEvent.press(component.getByText('Next Room'));
+
+      expect(component.queryByA11yLabel('Demon card, -9 points')).toBeTruthy();
+      expect(component.queryByA11yLabel('Demon card, -4 points')).toBeFalsy();
+      fireEvent.press(component.getByText('Run'));
+      expect(component.queryByA11yLabel('Demon card, -4 points')).toBeTruthy();
+    });
   });
 
   describe('monster cards', () => {
