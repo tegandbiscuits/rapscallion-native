@@ -73,8 +73,6 @@ describe(Game, () => {
       expect(component.queryByText(/HP: 20/)).toBeTruthy();
     });
 
-    it.todo('adds unplayed cards to the deck');
-
     it.todo('ends the game when the player runs out of HP');
 
     it.todo('ends the game when there are no unplayed cards');
@@ -119,7 +117,20 @@ describe(Game, () => {
       expect(component.queryByA11yLabel('Demon card, -8 points')).toBeTruthy();
     });
 
-    it.todo('can not run after playing a card');
+    it('can not run after playing a card', () => {
+      expect(component.queryByA11yLabel('Demon card, -1 points')).toBeTruthy();
+      expect(component.queryByA11yLabel('Demon card, -2 points')).toBeTruthy();
+      expect(component.queryByA11yLabel('Demon card, -3 points')).toBeTruthy();
+      expect(component.queryByA11yLabel('Demon card, -4 points')).toBeTruthy();
+
+      fireEvent.press(component.getByA11yLabel('Demon card, -1 points'));
+      fireEvent.press(component.getByText('Run'));
+
+      expect(component.queryByA11yLabel('Demon card, -1 points')).toBeTruthy();
+      expect(component.queryByA11yLabel('Demon card, -2 points')).toBeTruthy();
+      expect(component.queryByA11yLabel('Demon card, -3 points')).toBeTruthy();
+      expect(component.queryByA11yLabel('Demon card, -4 points')).toBeTruthy();
+    });
 
     it('can not be done after already running', () => {
       expect(component.queryByA11yLabel('Demon card, -1 points')).toBeTruthy();

@@ -63,6 +63,8 @@ const Game = () => {
     dispatch(addHealth(event.hpChange));
   };
 
+  const unableToRun = justRan || cardsPlayedCount !== 0;
+
   return (
     <View>
       <View>
@@ -83,7 +85,7 @@ const Game = () => {
 
           <Button
             mode="outlined"
-            disabled={justRan}
+            disabled={unableToRun}
             onPress={() => dispatch(dealRoom({ didRun: true }))}
             style={styles.roomAction}
           >
