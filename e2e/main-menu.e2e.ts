@@ -1,3 +1,5 @@
+import { device, expect } from 'detox';
+
 describe('Main menu', () => {
   beforeAll(async () => {
     await device.launchApp();

@@ -40,17 +40,9 @@
       }
     },
     {
-      "files": ["e2e/*.js"],
+      "files": ["e2e/*.js", "e2e/*.ts"],
       "env": {
         "jest": true
-      },
-      "globals": {
-        "detox": "readonly",
-        "device": "readonly",
-        "expect": "readonly",
-        "waitFor": "readonly",
-        "element": "readonly",
-        "by": "readonly"
       },
       "rules": {
         "import/no-extraneous-dependencies": "off"
