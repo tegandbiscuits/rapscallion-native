@@ -38,6 +38,23 @@
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
       }
+    },
+    {
+      "files": ["e2e/*.js"],
+      "env": {
+        "jest": true
+      },
+      "globals": {
+        "detox": "readonly",
+        "device": "readonly",
+        "expect": "readonly",
+        "waitFor": "readonly",
+        "element": "readonly",
+        "by": "readonly"
+      },
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
     }
   ]
 }
