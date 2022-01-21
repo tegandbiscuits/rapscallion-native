@@ -37,8 +37,21 @@ const App = () => (
     <ReduxProvider store={store}>
       <PaperProvider theme={theme}>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Game" component={Game} />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Game"
+            component={Game}
+            options={{
+              presentation: 'fullScreenModal',
+              animation: 'fade',
+            }}
+          />
         </Stack.Navigator>
 
         {/* <Game /> */}
