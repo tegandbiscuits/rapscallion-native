@@ -121,7 +121,7 @@ const Game = () => {
         </View>
       </View>
 
-      <View style={styles.cardContainer}>
+      <View style={styles.cardContainer} accessible={false} accessibilityLabel="Delt cards">
         {room.map((card) => {
           if (!card) {
             return null;

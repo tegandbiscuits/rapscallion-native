@@ -186,4 +186,23 @@ describe('Standard game', () => {
       await expect(element(by.label('Demon card, -4 points'))).toBeVisible();
     });
   });
+
+  describe('monster cards', () => {
+    beforeEach(async () => {
+      await device.reloadReactNative();
+      await startGame([
+        { suit: 'clubs', rank: 4 },
+      ]);
+    });
+
+    it('subtracts HP when fighting without a sheild', async () => {
+      await expect(element(by.text('HP: 21'))).toBeVisible();
+      await expect(element(by.text('HP: 17'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -4 points')).tap();
+
+      await expect(element(by.text('HP: 21'))).not.toBeVisible();
+      await expect(element(by.text('HP: 17'))).toBeVisible();
+    });
+  });
 });

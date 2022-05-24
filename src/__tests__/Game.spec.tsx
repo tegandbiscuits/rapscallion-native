@@ -27,24 +27,6 @@ const renderGame = (deck: IPlayCard[]): RenderAPI => {
 describe(Game, () => {
   let component: RenderAPI;
 
-  describe('monster cards', () => {
-    beforeEach(() => {
-      component = renderGame([
-        { suit: 'clubs', rank: 4 },
-      ]);
-    });
-
-    it('subtracts HP when fighting without a sheild', () => {
-      expect(component.queryByText(/HP: 21/)).toBeTruthy();
-      expect(component.queryByText(/HP: 17/)).toBeFalsy();
-
-      fireEvent.press(component.getByA11yLabel('Demon card, -4 points'));
-
-      expect(component.queryByText(/HP: 21/)).toBeFalsy();
-      expect(component.queryByText(/HP: 17/)).toBeTruthy();
-    });
-  });
-
   describe('potion cards', () => {
     beforeEach(() => {
       component = renderGame([
