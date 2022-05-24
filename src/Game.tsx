@@ -1,10 +1,15 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
-import { dealRoom, playCard, addHealth, shuffleDeck, dealGame } from './state/gameSlice';
+import {
+  dealRoom,
+  playCard,
+  addHealth,
+  dealGame,
+} from './state/gameSlice';
 import { RootState } from './state/store';
 
 export enum GameModes {
