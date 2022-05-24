@@ -1,9 +1,10 @@
-import React from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
-import { dealRoom, playCard, addHealth } from './state/gameSlice';
+import { dealRoom, playCard, addHealth, shuffleDeck, dealGame } from './state/gameSlice';
 import { RootState } from './state/store';
 
 export enum GameModes {
@@ -59,6 +60,17 @@ const Game = () => {
 
     return count;
   }, 0);
+
+  const { params } = useRoute<RouteProp<{ params: { deck?: string } }>>();
+
+  useEffect(() => {
+    if (!params?.deck) {
+      return;
+    }
+
+    const parsedDeck = JSON.parse(params.deck);
+    dispatch(dealGame({ deck: parsedDeck, shuffle: false }));
+  }, [params, dispatch]);
 
   const handleCardPress = (event: { hpChange: number, card: IPlayCard }) => {
     dispatch(playCard(event.card));

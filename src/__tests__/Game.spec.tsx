@@ -38,15 +38,15 @@ describe(Game, () => {
       ]);
     });
 
-    it('can render', () => {
-      const text = component.queryByText('Progress: 44');
-      expect(text).toBeTruthy();
-    });
+    // it('can render', () => {
+    //   const text = component.queryByText('Progress: 44');
+    //   expect(text).toBeTruthy();
+    // });
 
-    it('presents four cards', () => {
-      const cards = component.queryAllByA11yLabel(/\w+ card, -?\d+ points/);
-      expect(cards).toHaveLength(4);
-    });
+    // it('presents four cards', () => {
+    //   const cards = component.queryAllByA11yLabel(/\w+ card, -?\d+ points/);
+    //   expect(cards).toHaveLength(4);
+    // });
 
     it('has to play three cards to go to the next room', () => {
       expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(4);

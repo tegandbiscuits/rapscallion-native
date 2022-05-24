@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Knot from './icons/Knot';
-import { shuffleDeck } from './state/gameSlice';
+import { dealGame } from './state/gameSlice';
 import Decks from './decks/decks';
 
 const styles = StyleSheet.create({
@@ -31,7 +31,7 @@ const App = () => {
   const navigation = useNavigation<any>();
 
   const startGame = () => {
-    dispatch(shuffleDeck(Decks.Standard));
+    dispatch(dealGame({ deck: Decks.Standard, shuffle: true }));
     navigation.navigate('Game');
   };
 
