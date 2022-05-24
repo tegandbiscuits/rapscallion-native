@@ -87,4 +87,103 @@ describe('Standard game', () => {
 
     it.todo('track progress remaining');
   });
+
+  describe('running', () => {
+    beforeEach(async () => {
+      await device.reloadReactNative();
+      await startGame([
+        { suit: 'clubs', rank: 1 },
+        { suit: 'clubs', rank: 2 },
+        { suit: 'clubs', rank: 3 },
+        { suit: 'clubs', rank: 4 },
+        { suit: 'clubs', rank: 5 },
+        { suit: 'clubs', rank: 6 },
+        { suit: 'clubs', rank: 7 },
+        { suit: 'clubs', rank: 8 },
+        { suit: 'clubs', rank: 9 },
+      ]);
+    });
+
+    it('presents four different cards', async () => {
+      await expect(element(by.label('Demon card, -1 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -2 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -3 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -4 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -5 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -6 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -7 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -8 points'))).not.toBeVisible();
+
+      await element(by.text('RUN')).tap();
+
+      await expect(element(by.label('Demon card, -1 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -2 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -3 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -4 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -5 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -6 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -7 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -8 points'))).toBeVisible();
+    });
+
+    it('can not run after playing a card', async () => {
+      await expect(element(by.label('Demon card, -1 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -2 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -3 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -4 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -5 points'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -1 points')).tap();
+      await element(by.text('RUN')).tap();
+
+      await expect(element(by.label('Demon card, -1 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -2 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -3 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -4 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -5 points'))).not.toBeVisible();
+    });
+
+    it('can not be done after already running', async () => {
+      await expect(element(by.label('Demon card, -1 points'))).toBeVisible();
+
+      await element(by.text('RUN')).tap();
+
+      await expect(element(by.label('Demon card, -5 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -6 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -7 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -8 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -9 points'))).not.toBeVisible();
+
+      await element(by.text('RUN')).tap();
+
+      await expect(element(by.label('Demon card, -9 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -5 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -6 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -7 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -8 points'))).toBeVisible();
+    });
+
+    it('can be done after not running a round', async () => {
+      await expect(element(by.label('Demon card, -1 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -5 points'))).not.toBeVisible();
+
+      await element(by.text('RUN')).tap();
+      await expect(element(by.label('Demon card, -1 points'))).not.toBeVisible();
+      await expect(element(by.label('Demon card, -5 points'))).toBeVisible();
+
+      await element(by.text('RUN')).tap();
+      await expect(element(by.label('Demon card, -5 points'))).toBeVisible();
+
+      await element(by.label('Demon card, -5 points')).tap();
+      await element(by.label('Demon card, -6 points')).tap();
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('Demon card, -9 points'))).not.toBeVisible();
+      await element(by.text('NEXT ROOM')).tap();
+
+      await expect(element(by.label('Demon card, -9 points'))).toBeVisible();
+      await expect(element(by.label('Demon card, -4 points'))).not.toBeVisible();
+      await element(by.text('RUN')).tap();
+      await expect(element(by.label('Demon card, -4 points'))).toBeVisible();
+    });
+  });
 });
