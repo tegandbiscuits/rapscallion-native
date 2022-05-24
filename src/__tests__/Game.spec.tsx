@@ -27,59 +27,6 @@ const renderGame = (deck: IPlayCard[]): RenderAPI => {
 describe(Game, () => {
   let component: RenderAPI;
 
-  describe('playing cards', () => {
-    beforeEach(() => {
-      component = renderGame([
-        { suit: 'clubs', rank: 1 },
-        { suit: 'clubs', rank: 2 },
-        { suit: 'hearts', rank: 2 },
-        { suit: 'hearts', rank: 3 },
-        { suit: 'clubs', rank: 5 },
-      ]);
-    });
-
-    // it('can render', () => {
-    //   const text = component.queryByText('Progress: 44');
-    //   expect(text).toBeTruthy();
-    // });
-
-    // it('presents four cards', () => {
-    //   const cards = component.queryAllByA11yLabel(/\w+ card, -?\d+ points/);
-    //   expect(cards).toHaveLength(4);
-    // });
-
-    it('has to play three cards to go to the next room', () => {
-      expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(4);
-      fireEvent.press(component.getByText('Next Room'));
-      expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(4);
-
-      fireEvent.press(component.getByA11yLabel('Demon card, -1 points'));
-      fireEvent.press(component.getByA11yLabel('Demon card, -2 points'));
-      fireEvent.press(component.getByA11yLabel('Potion card, 2 points'));
-
-      expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(4);
-      fireEvent.press(component.getByText('Next Room'));
-      expect(component.queryAllByA11yLabel(/\w+ card, -?\d+ points/)).toHaveLength(2);
-    });
-
-    it('can not play cards multiple times', () => {
-      expect(component.queryByText(/HP: 21/)).toBeTruthy();
-      fireEvent.press(component.getByA11yLabel('Demon card, -1 points'));
-      expect(component.queryByText(/HP: 21/)).toBeFalsy();
-      expect(component.queryByText(/HP: 20/)).toBeTruthy();
-
-      fireEvent.press(component.getByA11yLabel('Demon card, -1 points'));
-      expect(component.queryByText(/HP: 19/)).toBeFalsy();
-      expect(component.queryByText(/HP: 20/)).toBeTruthy();
-    });
-
-    it.todo('ends the game when the player runs out of HP');
-
-    it.todo('ends the game when there are no unplayed cards');
-
-    it.todo('track progress remaining');
-  });
-
   describe('running', () => {
     beforeEach(() => {
       component = renderGame([

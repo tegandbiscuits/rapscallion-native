@@ -108,9 +108,11 @@ const Game = () => {
         </View>
 
         <View style={styles.stats}>
+          <Text style={{ color: theme.colors.primary }}>HP: {hp}</Text>
+
           <Text style={{ color: theme.colors.primary }}>
             {/* eslint-disable react/jsx-one-expression-per-line */}
-            HP: {hp} • Shield: {shield}/{shieldRank}
+            Shield: {shield}/{shieldRank}
           </Text>
           <Text>
             {/* eslint-disable react/jsx-one-expression-per-line */}
