@@ -261,4 +261,10 @@ describe('Standard game', () => {
       await expect(element(by.text('HP: 12'))).toBeVisible();
     });
   });
+
+  describe('shield cards', () => {
+    it.todo('separates active shield cards');
+  });
+
+  // TODO: learn how shield rank works
 });

@@ -25,11 +25,4 @@ const renderGame = (deck: IPlayCard[]): RenderAPI => {
 };
 
 describe(Game, () => {
-  let component: RenderAPI;
-
-  describe('shield cards', () => {
-    it.todo('separates active shield cards');
-  });
-
-  // TODO: learn how shield rank works
 });
