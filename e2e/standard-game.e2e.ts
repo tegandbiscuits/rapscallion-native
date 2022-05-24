@@ -205,4 +205,60 @@ describe('Standard game', () => {
       await expect(element(by.text('HP: 17'))).toBeVisible();
     });
   });
+
+  describe('potion cards', () => {
+    beforeEach(async () => {
+      await device.reloadReactNative();
+      await startGame([
+        { suit: 'clubs', rank: 10 },
+        { suit: 'clubs', rank: 5 },
+        { suit: 'hearts', rank: 2 },
+        { suit: 'hearts', rank: 3 },
+        { suit: 'hearts', rank: 4 },
+      ]);
+
+      await element(by.label('Demon card, -10 points')).tap();
+    });
+
+    it('is able to add to HP', async () => {
+      await expect(element(by.text('HP: 11'))).toBeVisible();
+      await expect(element(by.text('HP: 13'))).not.toBeVisible();
+
+      await element(by.label('Potion card, 2 points')).tap();
+
+      await expect(element(by.text('HP: 11'))).not.toBeVisible();
+      await expect(element(by.text('HP: 13'))).toBeVisible();
+    });
+
+    it('only adds the first HP card', async () => {
+      await element(by.label('Potion card, 2 points')).tap();
+      await expect(element(by.text('HP: 13'))).toBeVisible();
+
+      await element(by.label('Potion card, 3 points')).tap();
+      await expect(element(by.text('HP: 16'))).not.toBeVisible();
+      await expect(element(by.text('HP: 13'))).toBeVisible();
+    });
+
+    it('can fight a monster after taking a potion', async () => {
+      await element(by.label('Potion card, 2 points')).tap();
+      await expect(element(by.text('HP: 13'))).toBeVisible();
+
+      await element(by.label('Demon card, -5 points')).tap();
+      await expect(element(by.text('HP: 8'))).toBeVisible();
+    });
+
+    it('can add additional potion cards in the next room', async () => {
+      await element(by.label('Demon card, -5 points')).tap();
+      await element(by.label('Potion card, 2 points')).tap();
+
+      await expect(element(by.text('HP: 8'))).toBeVisible();
+      await expect(element(by.label('Potion card, 4 points'))).not.toBeVisible();
+      await element(by.text('NEXT ROOM')).tap();
+      await expect(element(by.label('Potion card, 4 points'))).toBeVisible();
+
+      await expect(element(by.text('HP: 12'))).not.toBeVisible();
+      await element(by.label('Potion card, 4 points')).tap();
+      await expect(element(by.text('HP: 12'))).toBeVisible();
+    });
+  });
 });
