@@ -3,8 +3,8 @@ import { IPlayCard } from '../../decks/PlayCard';
 import reducer, {
   GameState,
   dealRoom,
-  shuffleDeck,
   addHealth,
+  dealGame,
 } from '../gameSlice';
 
 describe('deckSlice', () => {
@@ -55,9 +55,9 @@ describe('deckSlice', () => {
     };
   });
 
-  describe('shuffleDeck', () => {
+  describe('dealGame', () => {
     it('can shuffle a standard deck', () => {
-      const newState = reducer(initialState, shuffleDeck(Decks.Standard));
+      const newState = reducer(initialState, dealGame({ deck: Decks.Standard, shuffle: true }));
       expect(newState).not.toEqual(initialState);
       expect(newState.room).toHaveLength(4);
       expect(newState.dungeon).toHaveLength(Decks.Standard.length - 4);
