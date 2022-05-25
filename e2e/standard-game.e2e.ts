@@ -263,8 +263,34 @@ describe('Standard game', () => {
   });
 
   describe('shield cards', () => {
-    it.todo('separates active shield cards');
-  });
+    describe('when a shield is selected', () => {
+      it.todo('indicates that it is selected');
 
-  // TODO: learn how shield rank works
+      it.todo('replaces any already selected shields');
+    });
+
+    it.todo('blocks the damage to up to the blocking rank');
+
+    it.todo('sets the shield rank to the rank of the last enemy it was used against');
+
+    // TODO: also ensure that it still blocked some points before breaking
+    it.todo('breaks when used against an enemy with higher damage than shield rank');
+
+    it.todo('does not break when used without a rank');
+
+    /*
+    TODO: make this a test
+    Player picks up shield = 8
+    Player shield rank = {NOT SET}
+    Player attacks level 5 enemy
+    Player shield rank set to level 5
+    Player attacks level 4 enemy
+    Player takes no damage because 8 > 4
+    Player shield does not break because shield rank (5) is > 4
+    Player shield rank now set to 4 (shield rank = last enemy level)
+    Player attacks level 6 enemy
+    Player takes no damage because 8 > 6
+    Player shield breaks because shield rank (4) < 6
+    */
+  });
 });
