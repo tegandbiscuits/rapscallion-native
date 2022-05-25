@@ -1,9 +1,15 @@
-import React from 'react';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
-import { dealRoom, playCard, addHealth } from './state/gameSlice';
+import {
+  dealRoom,
+  playCard,
+  addHealth,
+  dealGame,
+} from './state/gameSlice';
 import { RootState } from './state/store';
 
 export enum GameModes {
@@ -11,6 +17,11 @@ export enum GameModes {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 20,
+  },
   cardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -55,6 +66,17 @@ const Game = () => {
     return count;
   }, 0);
 
+  const { params } = useRoute<RouteProp<{ params: { deck?: string } }>>();
+
+  useEffect(() => {
+    if (!params?.deck) {
+      return;
+    }
+
+    const parsedDeck = JSON.parse(params.deck);
+    dispatch(dealGame({ deck: parsedDeck, shuffle: false }));
+  }, [params, dispatch]);
+
   const handleCardPress = (event: { hpChange: number, card: IPlayCard }) => {
     dispatch(playCard(event.card));
     dispatch(addHealth(event.hpChange));
@@ -63,7 +85,7 @@ const Game = () => {
   const unableToRun = justRan || cardsPlayedCount !== 0;
 
   return (
-    <View>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View>
         <Text style={styles.progress}>
           {/* eslint-disable react/jsx-one-expression-per-line */}
@@ -91,9 +113,11 @@ const Game = () => {
         </View>
 
         <View style={styles.stats}>
+          <Text style={{ color: theme.colors.primary }}>HP: {hp}</Text>
+
           <Text style={{ color: theme.colors.primary }}>
             {/* eslint-disable react/jsx-one-expression-per-line */}
-            HP: {hp} • Shield: {shield}/{shieldRank}
+            Shield: {shield}/{shieldRank}
           </Text>
           <Text>
             {/* eslint-disable react/jsx-one-expression-per-line */}
@@ -102,7 +126,7 @@ const Game = () => {
         </View>
       </View>
 
-      <View style={styles.cardContainer}>
+      <View style={styles.cardContainer} accessible={false} accessibilityLabel="Delt cards">
         {room.map((card) => {
           if (!card) {
             return null;

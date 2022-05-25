@@ -17,13 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "teganrauh.rapscallion"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "teganrauh.rapscallion"
     },
     "web": {
       "favicon": "./assets/favicon.png"

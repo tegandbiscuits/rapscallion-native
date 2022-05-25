@@ -57,9 +57,13 @@ const gameSlice = createSlice({
       state.potionSickness = 0;
     },
 
-    shuffleDeck(state, action: PayloadAction<IPlayCard[]>) {
-      const shuffledCards = shuffleArray(action.payload);
-      const [a, b, c, d, ...rest] = shuffledCards;
+    dealGame(state, action: PayloadAction<{ deck: IPlayCard[], shuffle: boolean }>) {
+      let cards = action.payload.deck;
+      if (action.payload.shuffle) {
+        cards = shuffleArray(action.payload.deck);
+      }
+
+      const [a, b, c, d, ...rest] = cards;
       state.room = [a, b, c, d];
       state.dungeon = rest;
     },
@@ -90,7 +94,7 @@ const gameSlice = createSlice({
 
 export const {
   dealRoom,
-  shuffleDeck,
+  dealGame,
   playCard,
   addHealth,
 } = gameSlice.actions;

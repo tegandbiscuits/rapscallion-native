@@ -38,6 +38,15 @@
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
       }
+    },
+    {
+      "files": ["e2e/*.js", "e2e/*.ts"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
     }
   ]
 }
