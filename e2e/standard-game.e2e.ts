@@ -263,10 +263,76 @@ describe('Standard game', () => {
   });
 
   describe('shield cards', () => {
-    describe('when a shield is selected', () => {
-      it.todo('indicates that it is selected');
+    beforeEach(async () => {
+      await device.reloadReactNative();
+      // await startGame([
+      //   { suit: 'diamonds', rank: 8 },
+      //   { suit: 'clubs', rank: 5 },
+      //   { suit: 'clubs', rank: 4 },
+      //   { suit: 'clubs', rank: 6 },
+      // ]);
 
-      it.todo('replaces any already selected shields');
+      await startGame([
+        { suit: 'diamonds', rank: 8 },
+        { suit: 'diamonds', rank: 5 },
+        { suit: 'clubs', rank: 7 },
+        { suit: 'clubs', rank: 6 },
+      ]);
+    });
+
+    xit('can use a shield', async () => {
+      /*
+      TODO: make this a test
+      Player picks up shield = 8
+      Player shield rank = {NOT SET}
+      Player attacks level 5 enemy
+      Player shield rank set to level 5
+      Player attacks level 4 enemy
+      Player takes no damage because 8 > 4
+      Player shield does not break because shield rank (5) is > 4
+      Player shield rank now set to 4 (shield rank = last enemy level)
+      Player attacks level 6 enemy
+      Player takes no damage because 8 > 6
+      Player shield breaks because shield rank (4) < 6
+      */
+    });
+
+    describe('when a shield is selected', () => {
+      it('indicates that it is selected', async () => {
+        await expect(element(by.label('(Active) Shield card, 8 blocking points'))).not.toBeVisible();
+        await expect(element(by.text('Shield: 0/0'))).toBeVisible();
+        await expect(element(by.text('Shield: 8/0'))).not.toBeVisible();
+
+        await element(by.label('Shield card, 8 blocking points')).tap();
+
+        await expect(element(by.text('Shield: 0/0'))).not.toBeVisible();
+        await expect(element(by.text('Shield: 8/0'))).toBeVisible();
+        await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
+      });
+
+      it('replaces any already selected shields', async () => {
+        await element(by.label('Shield card, 8 blocking points')).tap();
+        await expect(element(by.text('Shield: 8/0'))).toBeVisible();
+        await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
+        await expect(element(by.text('Shield: 5/0'))).not.toBeVisible();
+        await expect(element(by.label('(Active) Shield card, 5 blocking points'))).not.toBeVisible();
+
+        await element(by.label('Shield card, 5 blocking points')).tap();
+        await expect(element(by.text('Shield: 8/0'))).not.toBeVisible();
+        await expect(element(by.label('(Active) Shield card, 8 blocking points'))).not.toBeVisible();
+        await expect(element(by.text('Shield: 5/0'))).toBeVisible();
+        await expect(element(by.label('(Active) Shield card, 5 blocking points'))).toBeVisible();
+      });
+
+      it('separates the shield across rooms', async () => {
+        await element(by.label('Shield card, 5 blocking points')).tap();
+        await element(by.label('Shield card, 8 blocking points')).tap();
+        await element(by.label('Demon card, -7 points')).tap();
+        await element(by.text('NEXT ROOM')).tap();
+
+        await expect(element(by.text('Shield: 8/0'))).toBeVisible();
+        await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
+      });
     });
 
     it.todo('blocks the damage to up to the blocking rank');
@@ -277,20 +343,5 @@ describe('Standard game', () => {
     it.todo('breaks when used against an enemy with higher damage than shield rank');
 
     it.todo('does not break when used without a rank');
-
-    /*
-    TODO: make this a test
-    Player picks up shield = 8
-    Player shield rank = {NOT SET}
-    Player attacks level 5 enemy
-    Player shield rank set to level 5
-    Player attacks level 4 enemy
-    Player takes no damage because 8 > 4
-    Player shield does not break because shield rank (5) is > 4
-    Player shield rank now set to 4 (shield rank = last enemy level)
-    Player attacks level 6 enemy
-    Player takes no damage because 8 > 6
-    Player shield breaks because shield rank (4) < 6
-    */
   });
 });

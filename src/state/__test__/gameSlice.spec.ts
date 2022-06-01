@@ -48,8 +48,10 @@ describe('deckSlice', () => {
       ],
       progress: 0,
       hp: 0,
-      shield: 0,
-      shieldRank: 0,
+      shield: {
+        rank: 0,
+        blocking: 0,
+      },
       xp: 0,
       potionSickness: 0,
     };

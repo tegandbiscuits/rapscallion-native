@@ -8,8 +8,10 @@ export interface GameState {
   justRan: boolean;
   progress: number;
   hp: number;
-  shield: number;
-  shieldRank: number;
+  shield: {
+    rank: number;
+    blocking: number;
+  };
   xp: number;
   potionSickness: number;
 }
@@ -20,8 +22,10 @@ const initialState: GameState = {
   justRan: false,
   progress: 44,
   hp: 21,
-  shield: 0,
-  shieldRank: 0,
+  shield: {
+    rank: 0,
+    blocking: 0,
+  },
   xp: 0,
   potionSickness: 0,
 };
@@ -44,6 +48,13 @@ const gameSlice = createSlice({
         // eslint-disable-next-line no-console
         console.warn('Trying to play a card that is not currently in the room');
         return;
+      }
+
+      if (card.suit === 'diamonds') {
+        state.shield = {
+          rank: 0,
+          blocking: card.rank,
+        };
       }
 
       card.played = true;
