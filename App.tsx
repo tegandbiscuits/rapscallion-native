@@ -2,17 +2,39 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { configureFonts, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from './src/Home';
 import Game from './src/Game';
 import { store } from './src/state/store';
 
+const fontConfig: Parameters<typeof configureFonts>[0] = {
+  web: {
+    regular: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    medium: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    light: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    thin: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+  },
+  ios: {
+    regular: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    medium: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    light: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    thin: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+  },
+  android: {
+    regular: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    medium: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    light: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+    thin: { fontFamily: 'Simonetta-Regular', fontWeight: 'normal' },
+  },
+};
+
 const theme: typeof DefaultTheme = {
   ...DefaultTheme,
   mode: 'adaptive',
   dark: true,
+  fonts: configureFonts(fontConfig),
   colors: {
     ...DefaultTheme.colors,
     primary: '#fff',
