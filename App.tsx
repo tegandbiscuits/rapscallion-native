@@ -49,7 +49,7 @@ const theme = {
     ...DefaultTheme.colors,
     primary: '#fff',
     background: '#152624',
-    text: '#777',
+    text: '#fff',
     consumable: '#ba123a',
     fightable: '#000000',
   },

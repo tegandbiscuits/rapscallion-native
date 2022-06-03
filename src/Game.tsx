@@ -5,6 +5,7 @@ import { Button, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
+import Stat from './Stat';
 import {
   dealRoom,
   playCard,
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 20,
+    justifyContent: 'space-between',
   },
   cardContainer: {
     flexDirection: 'row',
@@ -36,9 +38,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+    width: '100%',
   },
   roomAction: {
-    width: '49%',
+    width: '48%',
   },
   stats: {
     alignItems: 'center',
@@ -86,48 +89,33 @@ const Game = () => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View>
-        <Text style={styles.progress}>
-          {/* eslint-disable react/jsx-one-expression-per-line */}
-          Progress: {progress}
-        </Text>
+      {/* <Text style={styles.progress}>
+        Progress: {progress}
+      </Text> */}
 
-        <View style={styles.roomActions}>
-          <Button
-            mode="outlined"
-            disabled={cardsPlayedCount < 3}
-            style={styles.roomAction}
-            onPress={() => dispatch(dealRoom({ didRun: false }))}
-          >
-            Next Room
-          </Button>
-
-          <Button
-            mode="outlined"
-            disabled={unableToRun}
-            onPress={() => dispatch(dealRoom({ didRun: true }))}
-            style={styles.roomAction}
-          >
-            Run
-          </Button>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+        <View style={{ flexDirection: 'row' }}>
+          <Stat points={hp} label="HP" />
+          <Stat points={xp} label="XP" />
         </View>
-
-        <View style={styles.stats}>
-          <Text style={{ color: theme.colors.primary }}>
-            HP: {hp}
-          </Text>
-          <Text style={{ color: theme.colors.primary }}>
-            Shield: {shield.blocking}/{shield.rank}
-          </Text>
-          <Text>
-            XP: {xp} • Potions sickness: {potionSickness}
-          </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Stat points={shield.blocking} label="BP" />
+          <Stat points={shield.rank} label="SR" />
         </View>
       </View>
+      {/* <View>
+
+
+        <View style={styles.stats}>
+          <Text>
+             Potions sickness: {potionSickness}
+          </Text>
+        </View>
+      </View> */}
 
       <View style={styles.cardContainer} accessible={false} accessibilityLabel="Delt cards">
         {room.map((card) => {
-          if (!card) {
+          if (!card || card.played) {
             return null;
           }
 
@@ -151,6 +139,26 @@ const Game = () => {
           onPress={() => { }}
         />
       ) : null}
+
+      <View style={styles.roomActions}>
+        <Button
+          mode="outlined"
+          disabled={cardsPlayedCount < 3}
+          style={styles.roomAction}
+          onPress={() => dispatch(dealRoom({ didRun: false }))}
+        >
+          Next Room
+        </Button>
+
+        <Button
+          mode="outlined"
+          disabled={unableToRun}
+          onPress={() => dispatch(dealRoom({ didRun: true }))}
+          style={styles.roomAction}
+        >
+          Run
+        </Button>
+      </View>
     </SafeAreaView>
   );
 };
