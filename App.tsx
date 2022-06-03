@@ -30,7 +30,17 @@ const fontConfig: Parameters<typeof configureFonts>[0] = {
   },
 };
 
-const theme: typeof DefaultTheme = {
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace ReactNativePaper {
+    interface ThemeColors {
+      consumable: string;
+      fightable: string;
+    }
+  }
+}
+
+const theme = {
   ...DefaultTheme,
   mode: 'adaptive',
   dark: true,
@@ -40,6 +50,8 @@ const theme: typeof DefaultTheme = {
     primary: '#fff',
     background: '#152624',
     text: '#777',
+    consumable: '#ba123a',
+    fightable: '#000000',
   },
 };
 

@@ -10,10 +10,12 @@ import {
   Text,
   TouchableRipple,
   Colors,
+  useTheme,
 } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Potion from '../icons/Potion';
 import Shield from '../icons/Shield';
+import Dragon from '../icons/Dragon';
 
 type CardTypes = 'potion' | 'shield' | 'enemy';
 
@@ -73,7 +75,7 @@ const CenterImage = ({ cardType, color }: { cardType: CardTypes, color: string }
     case 'shield':
       return <Shield style={styles.cardImage} fill={color} />;
     default:
-      return <Text style={[styles.cardImage, { color }]}>(dragon was jank)</Text>;
+      return <Dragon style={styles.cardImage} fill={color} />;
   }
 };
 
@@ -135,7 +137,8 @@ const PlayCard = ({
     pointModification = -pointModification;
   }
 
-  const color = cardType === 'enemy' ? Colors.black : Colors.red500;
+  const theme = useTheme();
+  const color = cardType === 'enemy' ? theme.colors.fightable : theme.colors.consumable;
 
   const handlePress = () => {
     const hpChange = cardType !== 'shield' ? pointModification : 0;
