@@ -25,6 +25,7 @@ export interface IPlayCard {
 
 interface Props extends IPlayCard {
   onPress: (event: { hpChange: number, card: IPlayCard }) => void;
+  active?: boolean;
 }
 
 const cardImageSize = 120;
@@ -113,6 +114,7 @@ const PlayCard = ({
   suit,
   rank,
   played,
+  active,
 }: Props) => {
   let cardType: CardTypes;
   let cardLabel: string; // TODO: this could just be an i18n key
@@ -141,11 +143,24 @@ const PlayCard = ({
     onPress({ hpChange, card });
   };
 
+  // TODO: i18n to have the 's' or not
+  let a11yLabel: string;
+  if (cardType === 'shield') {
+    a11yLabel = `${cardLabel} card, ${pointModification} blocking points`;
+  } else {
+    a11yLabel = `${cardLabel} card, ${pointModification} points`;
+  }
+
+  if (active) {
+    a11yLabel = `(Active) ${a11yLabel}`;
+  }
+
+  // TODO: should active shield have selected accessbility state?
   return (
     <TouchableRipple
       onPress={handlePress}
       accessible
-      accessibilityLabel={`${cardLabel} card, ${pointModification} points`} // TODO: i18n to have the 's' or not
+      accessibilityLabel={a11yLabel}
       disabled={played}
     >
       <Surface style={styles.card}>
@@ -160,6 +175,10 @@ const PlayCard = ({
       </Surface>
     </TouchableRipple>
   );
+};
+
+PlayCard.defaultProps = {
+  active: false,
 };
 
 export default PlayCard;
