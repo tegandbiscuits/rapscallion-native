@@ -2,6 +2,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
 import {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 20,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -84,7 +85,7 @@ const Game = () => {
   const unableToRun = justRan || cardsPlayedCount !== 0;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View>
         <Text style={styles.progress}>
           {/* eslint-disable react/jsx-one-expression-per-line */}
@@ -150,7 +151,7 @@ const Game = () => {
           onPress={() => { }}
         />
       ) : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

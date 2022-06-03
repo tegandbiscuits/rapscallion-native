@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from './src/Home';
 import Game from './src/Game';
 import { store } from './src/state/store';
@@ -36,23 +37,22 @@ const App = () => (
   <NavigationContainer linking={linking}>
     <ReduxProvider store={store}>
       <PaperProvider theme={theme}>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Game"
-            component={Game}
-            options={{
-              presentation: 'fullScreenModal',
-              animation: 'fade',
-            }}
-          />
-        </Stack.Navigator>
+        <SafeAreaProvider>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              name="Home"
+              component={Home}
+            />
+            <Stack.Screen
+              name="Game"
+              component={Game}
+              options={{
+                presentation: 'fullScreenModal',
+                animation: 'fade',
+              }}
+            />
+          </Stack.Navigator>
+        </SafeAreaProvider>
 
         {/* <Game /> */}
         {/* eslint-disable-next-line react/style-prop-object */}
