@@ -26,9 +26,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cardContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    // justifyContent: 'center',
+    // backgroundColor: 'blue',
+    // width: '100%',
+    // height: '50%',
   },
   progress: {
     textAlign: 'center',
@@ -105,7 +108,6 @@ const Game = () => {
       </View>
       {/* <View>
 
-
         <View style={styles.stats}>
           <Text>
              Potions sickness: {potionSickness}
@@ -114,7 +116,8 @@ const Game = () => {
       </View> */}
 
       <View style={styles.cardContainer} accessible={false} accessibilityLabel="Delt cards">
-        {room.map((card) => {
+        {room.map((card, i) => {
+          // TODO: flip instead of render null
           if (!card || card.played) {
             return null;
           }
@@ -126,6 +129,7 @@ const Game = () => {
               suit={card.suit}
               rank={card.rank}
               played={card.played}
+              index={i}
             />
           );
         })}

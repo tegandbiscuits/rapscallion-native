@@ -3,8 +3,6 @@ import Svg, { Path, SvgProps } from 'react-native-svg';
 
 const Dragon = (props: SvgProps) => (
   <Svg
-    width={126}
-    height={125}
     viewBox="0 0 126 125"
     fill="black"
     // eslint-disable-next-line react/jsx-props-no-spreading

@@ -3,8 +3,6 @@ import Svg, { Path, SvgProps } from 'react-native-svg';
 
 const Potion = (props: SvgProps) => (
   <Svg
-    width={90}
-    height={125}
     viewBox="0 0 90 125"
     fill="black"
     // eslint-disable-next-line react/jsx-props-no-spreading

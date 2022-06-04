@@ -3,13 +3,12 @@ import {
   StyleProp,
   StyleSheet,
   TextStyle,
-  View,
+  ViewStyle,
 } from 'react-native';
 import {
   Surface,
   Text,
   TouchableRipple,
-  Colors,
   useTheme,
 } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -28,43 +27,27 @@ export interface IPlayCard {
 interface Props extends IPlayCard {
   onPress: (event: { hpChange: number, card: IPlayCard }) => void;
   active?: boolean;
+  index?: number;
 }
 
-const cardImageSize = 120;
 const styles = StyleSheet.create({
   card: {
     width: 150,
     height: 200,
-    margin: 5,
-    position: 'relative',
-  },
-  cardInfo: {
-    position: 'absolute',
+    padding: 8,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    top: '5%',
-    left: '5%',
   },
   cardImage: {
-    position: 'absolute',
-    height: cardImageSize,
-    width: cardImageSize,
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -(cardImageSize / 2) }, { translateY: -(cardImageSize / 2) }],
-    zIndex: -1,
+    height: '60%',
+    width: '60%',
   },
   cardLabel: {
-    position: 'absolute',
-    bottom: '5%',
-    width: '100%',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    fontSize: 25,
   },
   points: {
-    fontSize: 21,
-  },
-  cardSuit: {
-    fontSize: 20,
+    fontSize: 25,
+    width: '100%',
   },
 });
 
@@ -117,6 +100,7 @@ const PlayCard = ({
   rank,
   played,
   active,
+  index,
 }: Props) => {
   let cardType: CardTypes;
   let cardLabel: string; // TODO: this could just be an i18n key
@@ -158,6 +142,25 @@ const PlayCard = ({
     a11yLabel = `(Active) ${a11yLabel}`;
   }
 
+  let positionStyles: ViewStyle;
+  switch (index) {
+    case 0:
+      positionStyles = { bottom: 10, right: 10 };
+      break;
+    case 1:
+      positionStyles = { bottom: 10, left: 10 };
+      break;
+    case 2:
+      positionStyles = { top: 10, right: 10 };
+      break;
+    case 3:
+      positionStyles = { top: 10, left: 10 };
+      break;
+    default:
+      positionStyles = {};
+      break;
+  }
+
   // TODO: should active shield have selected accessbility state?
   return (
     <TouchableRipple
@@ -165,12 +168,11 @@ const PlayCard = ({
       accessible
       accessibilityLabel={a11yLabel}
       disabled={played}
+      style={[{ position: 'absolute' }, positionStyles]}
     >
       <Surface style={styles.card}>
-        <View style={styles.cardInfo}>
-          <Text style={[styles.points, { color }]}>{pointModification}</Text>
-          <SuitImage style={[styles.cardSuit, { color }]} suit={suit} />
-        </View>
+        <Text style={[styles.points, { color }]}>{pointModification}</Text>
+        {/* <SuitImage style={[styles.cardSuit, { color }]} suit={suit} /> */}
 
         <CenterImage cardType={cardType} color={color} />
 
@@ -182,6 +184,7 @@ const PlayCard = ({
 
 PlayCard.defaultProps = {
   active: false,
+  index: undefined,
 };
 
 export default PlayCard;
