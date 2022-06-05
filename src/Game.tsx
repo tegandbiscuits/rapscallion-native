@@ -1,8 +1,9 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect } from 'react';
+import { useWindowDimensions } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
 import Stat from './Stat';
@@ -26,12 +27,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cardContainer: {
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // justifyContent: 'center',
-    // backgroundColor: 'blue',
-    // width: '100%',
-    // height: '50%',
+    position: 'absolute',
+    backgroundColor: 'blue',
+    zIndex: -1,
   },
   progress: {
     textAlign: 'center',
@@ -90,6 +88,15 @@ const Game = () => {
 
   const unableToRun = justRan || cardsPlayedCount !== 0;
 
+  const dimensions = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+
+  const cardContainerDynamicStyles = {
+    top: insets.top,
+    height: dimensions.height - insets.top - insets.bottom,
+    width: dimensions.width - insets.left - insets.right,
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* <Text style={styles.progress}>
@@ -115,12 +122,26 @@ const Game = () => {
         </View>
       </View> */}
 
-      <View style={styles.cardContainer} accessible={false} accessibilityLabel="Delt cards">
+      {/* {shield.blocking ? (
+        <PlayCard
+          active
+          suit="diamonds"
+          rank={shield.blocking}
+          onPress={() => { }}
+        />
+      ) : null} */}
+
+      <View
+        style={[styles.cardContainer, cardContainerDynamicStyles]}
+        accessible={false}
+        accessibilityLabel="Delt cards"
+      >
         {room.map((card, i) => {
-          // TODO: flip instead of render null
-          if (!card || card.played) {
+          if (!card) {
             return null;
           }
+
+          console.log(i, card.suit, card.rank);
 
           return (
             <PlayCard
@@ -134,15 +155,6 @@ const Game = () => {
           );
         })}
       </View>
-
-      {shield.blocking ? (
-        <PlayCard
-          active
-          suit="diamonds"
-          rank={shield.blocking}
-          onPress={() => { }}
-        />
-      ) : null}
 
       <View style={styles.roomActions}>
         <Button

@@ -1,20 +1,16 @@
 import React from 'react';
-import {
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  ViewStyle,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   Surface,
   Text,
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Animated from 'react-native-reanimated';
 import Potion from '../icons/Potion';
 import Shield from '../icons/Shield';
 import Dragon from '../icons/Dragon';
+import useCardLayout from './useCardLayout';
 
 type CardTypes = 'potion' | 'shield' | 'enemy';
 
@@ -62,38 +58,6 @@ const CenterImage = ({ cardType, color }: { cardType: CardTypes, color: string }
   }
 };
 
-const suitIcons: Record<IPlayCard['suit'], string | null> = {
-  clubs: 'cards-club',
-  diamonds: 'cards-diamond',
-  hearts: 'cards-heart',
-  jack: null,
-  joker: null,
-  spades: 'cards-spade',
-};
-
-const SuitImage = ({
-  suit,
-  style,
-}: {
-  suit: IPlayCard['suit'],
-  style: StyleProp<TextStyle>,
-}) => {
-  const suitName = suitIcons[suit];
-
-  if (!suitIcons) {
-    return null;
-  }
-
-  return (
-    <MaterialCommunityIcons
-      style={style}
-      accessibilityLabel={suit}
-      // @ts-expect-error unable to ensure name is set more specific than string
-      name={suitName}
-    />
-  );
-};
-
 const PlayCard = ({
   onPress,
   suit,
@@ -124,12 +88,6 @@ const PlayCard = ({
   const theme = useTheme();
   const color = cardType === 'enemy' ? theme.colors.fightable : theme.colors.consumable;
 
-  const handlePress = () => {
-    const hpChange = cardType !== 'shield' ? pointModification : 0;
-    const card = { suit, rank };
-    onPress({ hpChange, card });
-  };
-
   // TODO: i18n to have the 's' or not
   let a11yLabel: string;
   if (cardType === 'shield') {
@@ -138,47 +96,46 @@ const PlayCard = ({
     a11yLabel = `${cardLabel} card, ${pointModification} points`;
   }
 
+  const [animatedStyles, onActivation] = useCardLayout(
+    index ?? 0,
+    styles.card.height,
+    styles.card.width,
+  );
+
   if (active) {
     a11yLabel = `(Active) ${a11yLabel}`;
+    // positionStyles = { top: insets.top };
   }
 
-  let positionStyles: ViewStyle;
-  switch (index) {
-    case 0:
-      positionStyles = { bottom: 10, right: 10 };
-      break;
-    case 1:
-      positionStyles = { bottom: 10, left: 10 };
-      break;
-    case 2:
-      positionStyles = { top: 10, right: 10 };
-      break;
-    case 3:
-      positionStyles = { top: 10, left: 10 };
-      break;
-    default:
-      positionStyles = {};
-      break;
-  }
+  const handlePress = () => {
+    if (cardType === 'shield') {
+      onActivation();
+    }
+
+    const hpChange = cardType !== 'shield' ? pointModification : 0;
+    const card = { suit, rank };
+    onPress({ hpChange, card });
+  };
 
   // TODO: should active shield have selected accessbility state?
   return (
-    <TouchableRipple
-      onPress={handlePress}
-      accessible
-      accessibilityLabel={a11yLabel}
-      disabled={played}
-      style={[{ position: 'absolute' }, positionStyles]}
-    >
-      <Surface style={styles.card}>
-        <Text style={[styles.points, { color }]}>{pointModification}</Text>
-        {/* <SuitImage style={[styles.cardSuit, { color }]} suit={suit} /> */}
+    <Animated.View style={[{ position: 'absolute' }, animatedStyles]}>
+      <TouchableRipple
+        onPress={handlePress}
+        accessible
+        accessibilityLabel={a11yLabel}
+        disabled={played}
+      >
+        <Surface style={styles.card}>
+          <Text style={[styles.points, { color }]}>{pointModification}</Text>
+          {/* <SuitImage style={[styles.cardSuit, { color }]} suit={suit} /> */}
 
-        <CenterImage cardType={cardType} color={color} />
+          <CenterImage cardType={cardType} color={color} />
 
-        <Text style={[styles.cardLabel, { color }]}>{cardLabel}</Text>
-      </Surface>
-    </TouchableRipple>
+          <Text style={[styles.cardLabel, { color }]}>{cardLabel}</Text>
+        </Surface>
+      </TouchableRipple>
+    </Animated.View>
   );
 };
 
