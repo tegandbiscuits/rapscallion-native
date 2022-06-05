@@ -5,6 +5,7 @@ import { Text } from 'react-native-paper';
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginHorizontal: 4,
   },
   points: {
     fontSize: 24,
