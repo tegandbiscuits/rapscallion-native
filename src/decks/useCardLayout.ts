@@ -29,6 +29,11 @@ const useCardLayout = (
     calcX = ((viewWidth / 2) - cardWidth) - 4;
   }
 
+  if (index === -1) {
+    calcY = 0;
+    calcX = (viewWidth - cardWidth) / 2;
+  }
+
   const posY = useSharedValue(calcY);
   const posX = useSharedValue(calcX);
   const animatedStyles = useAnimatedStyle(() => ({ top: posY.value, left: posX.value }));

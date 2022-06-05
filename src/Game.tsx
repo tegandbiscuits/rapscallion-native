@@ -1,8 +1,7 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { useWindowDimensions } from 'react-native';
-import { StyleSheet, View } from 'react-native';
-import { Button, Text, useTheme } from 'react-native-paper';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Button, useTheme } from 'react-native-paper';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     position: 'absolute',
-    backgroundColor: 'blue',
     zIndex: -1,
   },
   progress: {
@@ -55,11 +53,9 @@ const Game = () => {
   const {
     room,
     justRan,
-    progress,
     hp,
     shield,
     xp,
-    potionSickness,
   } = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
   const cardsPlayedCount = room.reduce((count, card) => {
@@ -97,6 +93,10 @@ const Game = () => {
     width: dimensions.width - insets.left - insets.right,
   };
 
+  const showShield = shield.blocking && !room.find((c) => (
+    c?.suit === 'diamonds' && c?.rank === shield.blocking
+  ));
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* <Text style={styles.progress}>
@@ -122,26 +122,25 @@ const Game = () => {
         </View>
       </View> */}
 
-      {/* {shield.blocking ? (
-        <PlayCard
-          active
-          suit="diamonds"
-          rank={shield.blocking}
-          onPress={() => { }}
-        />
-      ) : null} */}
-
       <View
         style={[styles.cardContainer, cardContainerDynamicStyles]}
         accessible={false}
         accessibilityLabel="Delt cards"
       >
+        {showShield ? (
+          <PlayCard
+            active
+            suit="diamonds"
+            rank={shield.blocking}
+            onPress={() => { }}
+            index={-1}
+          />
+        ) : null}
+
         {room.map((card, i) => {
           if (!card) {
             return null;
           }
-
-          console.log(i, card.suit, card.rank);
 
           return (
             <PlayCard
