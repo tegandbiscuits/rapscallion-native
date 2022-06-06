@@ -1,12 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   Surface,
   Text,
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import Animated from 'react-native-reanimated';
 import Potion from '../icons/Potion';
 import Shield from '../icons/Shield';
 import Dragon from '../icons/Dragon';
@@ -96,7 +95,7 @@ const PlayCard = ({
     a11yLabel = `${cardLabel} card, ${pointModification} points`;
   }
 
-  const [animatedStyles, onActivation] = useCardLayout(
+  const [layoutStyles] = useCardLayout(
     index ?? 0,
     styles.card.height,
     styles.card.width,
@@ -104,13 +103,12 @@ const PlayCard = ({
 
   if (active) {
     a11yLabel = `(Active) ${a11yLabel}`;
-    // positionStyles = { top: insets.top };
   }
 
   const handlePress = () => {
-    if (cardType === 'shield') {
-      onActivation();
-    }
+    // if (cardType === 'shield') {
+    //   onActivation();
+    // }
 
     const hpChange = cardType !== 'shield' ? pointModification : 0;
     const card = { suit, rank };
@@ -119,23 +117,20 @@ const PlayCard = ({
 
   // TODO: should active shield have selected accessbility state?
   return (
-    <Animated.View style={[{ position: 'absolute' }, animatedStyles]}>
-      <TouchableRipple
-        onPress={handlePress}
-        accessible
-        accessibilityLabel={a11yLabel}
-        disabled={played}
-      >
+    <View
+      style={[{ position: 'absolute' }, layoutStyles]}
+      accessible
+      accessibilityLabel={a11yLabel}
+    >
+      <TouchableRipple onPress={handlePress} disabled={played}>
         <Surface style={styles.card}>
           <Text style={[styles.points, { color }]}>{pointModification}</Text>
-          {/* <SuitImage style={[styles.cardSuit, { color }]} suit={suit} /> */}
-
           <CenterImage cardType={cardType} color={color} />
 
           <Text style={[styles.cardLabel, { color }]}>{cardLabel}</Text>
         </Surface>
       </TouchableRipple>
-    </Animated.View>
+    </View>
   );
 };
 

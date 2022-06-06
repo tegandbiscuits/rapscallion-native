@@ -48,6 +48,10 @@ const styles = StyleSheet.create({
   },
 });
 
+// const isActive = (blocking: number, card?: IPlayCard) => (
+//   card?.suit === 'diamonds' && card?.rank === blocking
+// );
+
 const Game = () => {
   const theme = useTheme();
   const {
@@ -93,10 +97,6 @@ const Game = () => {
     width: dimensions.width - insets.left - insets.right,
   };
 
-  const showShield = shield.blocking && !room.find((c) => (
-    c?.suit === 'diamonds' && c?.rank === shield.blocking
-  ));
-
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* <Text style={styles.progress}>
@@ -127,7 +127,7 @@ const Game = () => {
         accessible={false}
         accessibilityLabel="Delt cards"
       >
-        {showShield ? (
+        {shield.blocking ? (
           <PlayCard
             active
             suit="diamonds"
@@ -138,7 +138,7 @@ const Game = () => {
         ) : null}
 
         {room.map((card, i) => {
-          if (!card) {
+          if (!card || card.played) {
             return null;
           }
 

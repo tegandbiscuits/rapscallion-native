@@ -25,7 +25,7 @@ describe('Standard game', () => {
     });
 
     it('can go directly to a new game', async () => {
-      await expect(element(by.text('Progress: 44'))).toBeVisible();
+      // await expect(element(by.text('Progress: 44'))).toBeVisible();
 
       await expect(element(by.label('Demon card, -1 points'))).toBeVisible();
       await expect(element(by.label('Demon card, -2 points'))).toBeVisible();
@@ -70,15 +70,13 @@ describe('Standard game', () => {
     it('can not play cards multiple times', async () => {
       const demonCard = element(by.label('Demon card, -1 points'));
 
-      await expect(element(by.text('HP: 21'))).toBeVisible();
-      await expect(element(by.text('HP: 20'))).not.toBeVisible();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('HP: 20'))).not.toBeVisible();
       await demonCard.tap();
-      await expect(element(by.text('HP: 21'))).not.toBeVisible();
-      await expect(element(by.text('HP: 20'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await expect(element(by.label('HP: 20'))).toBeVisible();
 
-      await demonCard.tap();
-      await expect(element(by.text('HP: 19'))).not.toBeVisible();
-      await expect(element(by.text('HP: 20'))).toBeVisible();
+      await expect(demonCard).not.toBeVisible();
     });
 
     it.todo('ends the game when the player runs out of HP');
@@ -136,7 +134,6 @@ describe('Standard game', () => {
       await element(by.label('Demon card, -1 points')).tap();
       await element(by.text('RUN')).tap();
 
-      await expect(element(by.label('Demon card, -1 points'))).toBeVisible();
       await expect(element(by.label('Demon card, -2 points'))).toBeVisible();
       await expect(element(by.label('Demon card, -3 points'))).toBeVisible();
       await expect(element(by.label('Demon card, -4 points'))).toBeVisible();
@@ -185,6 +182,9 @@ describe('Standard game', () => {
       await element(by.text('RUN')).tap();
       await expect(element(by.label('Demon card, -4 points'))).toBeVisible();
     });
+
+    // TODO: double check this is the desired behavior
+    it.todo('shuffles cards back into deck after running');
   });
 
   describe('monster cards', () => {
@@ -196,13 +196,13 @@ describe('Standard game', () => {
     });
 
     it('subtracts HP when fighting without a sheild', async () => {
-      await expect(element(by.text('HP: 21'))).toBeVisible();
-      await expect(element(by.text('HP: 17'))).not.toBeVisible();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('HP: 17'))).not.toBeVisible();
 
       await element(by.label('Demon card, -4 points')).tap();
 
-      await expect(element(by.text('HP: 21'))).not.toBeVisible();
-      await expect(element(by.text('HP: 17'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await expect(element(by.label('HP: 17'))).toBeVisible();
     });
   });
 
@@ -221,44 +221,44 @@ describe('Standard game', () => {
     });
 
     it('is able to add to HP', async () => {
-      await expect(element(by.text('HP: 11'))).toBeVisible();
-      await expect(element(by.text('HP: 13'))).not.toBeVisible();
+      await expect(element(by.label('HP: 11'))).toBeVisible();
+      await expect(element(by.label('HP: 13'))).not.toBeVisible();
 
       await element(by.label('Potion card, 2 points')).tap();
 
-      await expect(element(by.text('HP: 11'))).not.toBeVisible();
-      await expect(element(by.text('HP: 13'))).toBeVisible();
+      await expect(element(by.label('HP: 11'))).not.toBeVisible();
+      await expect(element(by.label('HP: 13'))).toBeVisible();
     });
 
     it('only adds the first HP card', async () => {
       await element(by.label('Potion card, 2 points')).tap();
-      await expect(element(by.text('HP: 13'))).toBeVisible();
+      await expect(element(by.label('HP: 13'))).toBeVisible();
 
       await element(by.label('Potion card, 3 points')).tap();
-      await expect(element(by.text('HP: 16'))).not.toBeVisible();
-      await expect(element(by.text('HP: 13'))).toBeVisible();
+      await expect(element(by.label('HP: 16'))).not.toBeVisible();
+      await expect(element(by.label('HP: 13'))).toBeVisible();
     });
 
     it('can fight a monster after taking a potion', async () => {
       await element(by.label('Potion card, 2 points')).tap();
-      await expect(element(by.text('HP: 13'))).toBeVisible();
+      await expect(element(by.label('HP: 13'))).toBeVisible();
 
       await element(by.label('Demon card, -5 points')).tap();
-      await expect(element(by.text('HP: 8'))).toBeVisible();
+      await expect(element(by.label('HP: 8'))).toBeVisible();
     });
 
     it('can add additional potion cards in the next room', async () => {
       await element(by.label('Demon card, -5 points')).tap();
       await element(by.label('Potion card, 2 points')).tap();
 
-      await expect(element(by.text('HP: 8'))).toBeVisible();
+      await expect(element(by.label('HP: 8'))).toBeVisible();
       await expect(element(by.label('Potion card, 4 points'))).not.toBeVisible();
       await element(by.text('NEXT ROOM')).tap();
       await expect(element(by.label('Potion card, 4 points'))).toBeVisible();
 
-      await expect(element(by.text('HP: 12'))).not.toBeVisible();
+      await expect(element(by.label('HP: 12'))).not.toBeVisible();
       await element(by.label('Potion card, 4 points')).tap();
-      await expect(element(by.text('HP: 12'))).toBeVisible();
+      await expect(element(by.label('HP: 12'))).toBeVisible();
     });
   });
 
@@ -300,27 +300,35 @@ describe('Standard game', () => {
     describe('when a shield is selected', () => {
       it('indicates that it is selected', async () => {
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).not.toBeVisible();
-        await expect(element(by.text('Shield: 0/0'))).toBeVisible();
-        await expect(element(by.text('Shield: 8/0'))).not.toBeVisible();
+        await expect(element(by.label('BP: 0'))).toBeVisible();
+        await expect(element(by.label('SR: 0'))).toBeVisible();
+        await expect(element(by.label('BP: 8'))).not.toBeVisible();
+        // await expect(element(by.label('SR: 0'))).not.toBeVisible();
 
         await element(by.label('Shield card, 8 blocking points')).tap();
 
-        await expect(element(by.text('Shield: 0/0'))).not.toBeVisible();
-        await expect(element(by.text('Shield: 8/0'))).toBeVisible();
+        await expect(element(by.label('BP: 0'))).not.toBeVisible();
+        // await expect(element(by.label('SR: 0'))).not.toBeVisible();
+        await expect(element(by.label('BP: 8'))).toBeVisible();
+        await expect(element(by.label('SR: 0'))).toBeVisible();
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
       });
 
       it('replaces any already selected shields', async () => {
         await element(by.label('Shield card, 8 blocking points')).tap();
-        await expect(element(by.text('Shield: 8/0'))).toBeVisible();
+        await expect(element(by.label('BP: 8'))).toBeVisible();
+        // await expect(element(by.label('SR: 0'))).toBeVisible();
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
-        await expect(element(by.text('Shield: 5/0'))).not.toBeVisible();
+        await expect(element(by.label('BP: 5'))).not.toBeVisible();
+        // await expect(element(by.label('SR: 0'))).not.toBeVisible();
         await expect(element(by.label('(Active) Shield card, 5 blocking points'))).not.toBeVisible();
 
         await element(by.label('Shield card, 5 blocking points')).tap();
-        await expect(element(by.text('Shield: 8/0'))).not.toBeVisible();
+        await expect(element(by.label('BP: 8'))).not.toBeVisible();
+        // await expect(element(by.label('SR: 0'))).not.toBeVisible();
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).not.toBeVisible();
-        await expect(element(by.text('Shield: 5/0'))).toBeVisible();
+        await expect(element(by.label('BP: 5'))).toBeVisible();
+        // await expect(element(by.label('SR: 0'))).toBeVisible();
         await expect(element(by.label('(Active) Shield card, 5 blocking points'))).toBeVisible();
       });
 
@@ -330,7 +338,8 @@ describe('Standard game', () => {
         await element(by.label('Demon card, -7 points')).tap();
         await element(by.text('NEXT ROOM')).tap();
 
-        await expect(element(by.text('Shield: 8/0'))).toBeVisible();
+        await expect(element(by.label('BP: 8'))).toBeVisible();
+        await expect(element(by.label('SR: 0'))).toBeVisible();
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
       });
     });

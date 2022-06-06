@@ -1,9 +1,7 @@
-import { useCallback } from 'react';
 import { useWindowDimensions, ViewStyle } from 'react-native';
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-type CardLayout = [ViewStyle, () => void];
+type CardLayout = [ViewStyle];
 
 const useCardLayout = (
   index: number,
@@ -34,16 +32,21 @@ const useCardLayout = (
     calcX = (viewWidth - cardWidth) / 2;
   }
 
-  const posY = useSharedValue(calcY);
-  const posX = useSharedValue(calcX);
-  const animatedStyles = useAnimatedStyle(() => ({ top: posY.value, left: posX.value }));
+  // TODO: get animations working again
+  // const posY = useSharedValue(calcY);
+  // const posX = useSharedValue(calcX);
+  // eslint-disable-next-line max-len
+  // const layoutStyles = useAnimatedStyle<ViewStyle>(() => ({ top: posY.value, left: posX.value }));
 
-  const onActivation = useCallback(() => {
-    posY.value = withTiming(0, { duration: 500 });
-    posX.value = withTiming((viewWidth - cardWidth) / 2, { duration: 500 });
-  }, [posY, posX, viewWidth, cardWidth]);
+  // const onActivation = useCallback(() => {
+  //   posY.value = withTiming(0, { duration: 500 });
+  //   posX.value = withTiming((viewWidth - cardWidth) / 2, { duration: 500 });
+  // }, [posY, posX, viewWidth, cardWidth]);
 
-  return [animatedStyles, onActivation];
+  const layoutStyles = { top: calcY, left: calcX };
+
+  // return [layoutStyles, onActivation];
+  return [layoutStyles];
 };
 
 export default useCardLayout;

@@ -21,7 +21,7 @@ interface Props {
 }
 
 const Stat = ({ points, label }: Props) => (
-  <View style={styles.container}>
+  <View style={styles.container} accessibilityLabel={`${label}: ${points}`}>
     <Text style={styles.points}>{points}</Text>
     <Text style={styles.label}>{label}</Text>
   </View>
