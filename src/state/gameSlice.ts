@@ -108,6 +108,13 @@ const gameSlice = createSlice({
       if (action.payload > 0) {
         state.potionSickness += 1;
       }
+
+      if (state.shield.blocking && !isPotionCard) {
+        const newShieldRank = Math.abs(action.payload);
+        if (state.shield.rank === 0 || newShieldRank < state.shield.rank) {
+          state.shield.rank = newShieldRank;
+        }
+      }
     },
   },
 });
