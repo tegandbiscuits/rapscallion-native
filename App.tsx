@@ -42,7 +42,7 @@ declare global {
 
 const theme = {
   ...DefaultTheme,
-  mode: 'adaptive',
+  mode: 'adaptive' as 'adaptive' | 'exact' | undefined,
   dark: true,
   fonts: configureFonts(fontConfig),
   colors: {
