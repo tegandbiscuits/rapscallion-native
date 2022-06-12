@@ -17,9 +17,9 @@ describe('Main menu', () => {
     const standardButton = element(by.text('STANDARD'));
     await expect(standardButton).toBeVisible();
 
-    const progress = element(by.text('Progress: 44'));
-    await expect(progress).not.toBeVisible();
+    const health = element(by.label('HP: 21'));
+    await expect(health).not.toBeVisible();
     await standardButton.tap();
-    await expect(progress).toBeVisible();
+    await expect(health).toBeVisible();
   });
 });

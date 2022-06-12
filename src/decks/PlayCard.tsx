@@ -1,19 +1,15 @@
 import React from 'react';
-import {
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   Surface,
   Text,
   TouchableRipple,
-  Colors,
+  useTheme,
 } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Potion from '../icons/Potion';
 import Shield from '../icons/Shield';
+import Dragon from '../icons/Dragon';
+import useCardLayout from './useCardLayout';
 
 type CardTypes = 'potion' | 'shield' | 'enemy';
 
@@ -26,43 +22,27 @@ export interface IPlayCard {
 interface Props extends IPlayCard {
   onPress: (event: { hpChange: number, card: IPlayCard }) => void;
   active?: boolean;
+  index?: number;
 }
 
-const cardImageSize = 120;
 const styles = StyleSheet.create({
   card: {
     width: 150,
     height: 200,
-    margin: 5,
-    position: 'relative',
-  },
-  cardInfo: {
-    position: 'absolute',
+    padding: 8,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    top: '5%',
-    left: '5%',
   },
   cardImage: {
-    position: 'absolute',
-    height: cardImageSize,
-    width: cardImageSize,
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -(cardImageSize / 2) }, { translateY: -(cardImageSize / 2) }],
-    zIndex: -1,
+    height: '60%',
+    width: '60%',
   },
   cardLabel: {
-    position: 'absolute',
-    bottom: '5%',
-    width: '100%',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    fontSize: 25,
   },
   points: {
-    fontSize: 21,
-  },
-  cardSuit: {
-    fontSize: 20,
+    fontSize: 25,
+    width: '100%',
   },
 });
 
@@ -73,40 +53,8 @@ const CenterImage = ({ cardType, color }: { cardType: CardTypes, color: string }
     case 'shield':
       return <Shield style={styles.cardImage} fill={color} />;
     default:
-      return <Text style={[styles.cardImage, { color }]}>(dragon was jank)</Text>;
+      return <Dragon style={styles.cardImage} fill={color} />;
   }
-};
-
-const suitIcons: Record<IPlayCard['suit'], string | null> = {
-  clubs: 'cards-club',
-  diamonds: 'cards-diamond',
-  hearts: 'cards-heart',
-  jack: null,
-  joker: null,
-  spades: 'cards-spade',
-};
-
-const SuitImage = ({
-  suit,
-  style,
-}: {
-  suit: IPlayCard['suit'],
-  style: StyleProp<TextStyle>,
-}) => {
-  const suitName = suitIcons[suit];
-
-  if (!suitIcons) {
-    return null;
-  }
-
-  return (
-    <MaterialCommunityIcons
-      style={style}
-      accessibilityLabel={suit}
-      // @ts-expect-error unable to ensure name is set more specific than string
-      name={suitName}
-    />
-  );
 };
 
 const PlayCard = ({
@@ -115,6 +63,7 @@ const PlayCard = ({
   rank,
   played,
   active,
+  index,
 }: Props) => {
   let cardType: CardTypes;
   let cardLabel: string; // TODO: this could just be an i18n key
@@ -135,13 +84,8 @@ const PlayCard = ({
     pointModification = -pointModification;
   }
 
-  const color = cardType === 'enemy' ? Colors.black : Colors.red500;
-
-  const handlePress = () => {
-    const hpChange = cardType !== 'shield' ? pointModification : 0;
-    const card = { suit, rank };
-    onPress({ hpChange, card });
-  };
+  const theme = useTheme();
+  const color = cardType === 'enemy' ? theme.colors.fightable : theme.colors.consumable;
 
   // TODO: i18n to have the 's' or not
   let a11yLabel: string;
@@ -151,34 +95,48 @@ const PlayCard = ({
     a11yLabel = `${cardLabel} card, ${pointModification} points`;
   }
 
+  const [layoutStyles] = useCardLayout(
+    index ?? 0,
+    styles.card.height,
+    styles.card.width,
+  );
+
   if (active) {
     a11yLabel = `(Active) ${a11yLabel}`;
   }
 
+  const handlePress = () => {
+    // if (cardType === 'shield') {
+    //   onActivation();
+    // }
+
+    const hpChange = cardType !== 'shield' ? pointModification : 0;
+    const card = { suit, rank };
+    onPress({ hpChange, card });
+  };
+
   // TODO: should active shield have selected accessbility state?
   return (
-    <TouchableRipple
-      onPress={handlePress}
+    <View
+      style={[{ position: 'absolute' }, layoutStyles]}
       accessible
       accessibilityLabel={a11yLabel}
-      disabled={played}
     >
-      <Surface style={styles.card}>
-        <View style={styles.cardInfo}>
+      <TouchableRipple onPress={handlePress} disabled={played}>
+        <Surface style={styles.card}>
           <Text style={[styles.points, { color }]}>{pointModification}</Text>
-          <SuitImage style={[styles.cardSuit, { color }]} suit={suit} />
-        </View>
+          <CenterImage cardType={cardType} color={color} />
 
-        <CenterImage cardType={cardType} color={color} />
-
-        <Text style={[styles.cardLabel, { color }]}>{cardLabel}</Text>
-      </Surface>
-    </TouchableRipple>
+          <Text style={[styles.cardLabel, { color }]}>{cardLabel}</Text>
+        </Surface>
+      </TouchableRipple>
+    </View>
   );
 };
 
 PlayCard.defaultProps = {
   active: false,
+  index: undefined,
 };
 
 export default PlayCard;

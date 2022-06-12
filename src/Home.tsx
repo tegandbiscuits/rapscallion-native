@@ -44,7 +44,7 @@ const App = () => {
       <View style={styles.mainContent}>
         <Knot width={150} height={150} />
         <Button mode="outlined" onPress={startGame}>
-          Standard
+          Play
         </Button>
       </View>
     </SafeAreaView>
