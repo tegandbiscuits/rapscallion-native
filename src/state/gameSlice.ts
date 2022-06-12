@@ -113,6 +113,8 @@ const gameSlice = createSlice({
         const newShieldRank = Math.abs(action.payload);
         if (state.shield.rank === 0 || newShieldRank < state.shield.rank) {
           state.shield.rank = newShieldRank;
+        } else {
+          state.shield = initialState.shield;
         }
       }
     },

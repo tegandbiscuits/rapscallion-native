@@ -429,9 +429,40 @@ describe('Standard game', () => {
       await expect(element(by.label('HP: 9'))).not.toBeVisible();
     });
 
-    // TODO: also ensure that it still blocked some points before breaking
-    it.todo('breaks when used against an enemy with higher damage than shield rank');
+    it('breaks when used against an enemy with higher damage than shield rank', async () => {
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await element(by.label('Demon card, -6 points')).tap();
 
-    it.todo('does not break when used without a rank');
+      await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
+      await expect(element(by.label('BP: 8'))).toBeVisible();
+      await expect(element(by.label('SR: 6'))).toBeVisible();
+      await expect(element(by.label('BP: 0'))).not.toBeVisible();
+      await expect(element(by.label('SR: 0'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('(Active) Shield card, 8 blocking points'))).not.toBeVisible();
+      await expect(element(by.label('BP: 8'))).not.toBeVisible();
+      await expect(element(by.label('SR: 6'))).not.toBeVisible();
+      await expect(element(by.label('BP: 0'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+    });
+
+    it('does not break when used without a rank', async () => {
+      await element(by.label('Shield card, 5 blocking points')).tap();
+      await expect(element(by.label('(Active) Shield card, 5 blocking points'))).toBeVisible();
+      await expect(element(by.label('BP: 5'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('HP: 19'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('(Active) Shield card, 5 blocking points'))).toBeVisible();
+      await expect(element(by.label('BP: 5'))).toBeVisible();
+      await expect(element(by.label('SR: 7'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).not.toBeVisible();
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await expect(element(by.label('HP: 19'))).toBeVisible();
+    });
   });
 });
