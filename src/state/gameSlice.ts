@@ -85,7 +85,16 @@ const gameSlice = createSlice({
         return;
       }
 
-      const desiredHp = state.hp + action.payload;
+      let healthModifier = action.payload;
+      if (!isPotionCard) {
+        if (Math.abs(healthModifier) < state.shield.blocking) {
+          healthModifier = 0;
+        } else {
+          healthModifier += state.shield.blocking;
+        }
+      }
+
+      const desiredHp = state.hp + healthModifier;
       let newHp = desiredHp;
 
       if (desiredHp > 21) {

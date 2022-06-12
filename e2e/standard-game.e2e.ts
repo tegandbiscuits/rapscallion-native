@@ -344,7 +344,18 @@ describe('Standard game', () => {
       });
     });
 
-    it.todo('blocks the damage to up to the blocking rank');
+    it('blocks the damage to up to the blocking rank', async () => {
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('HP: 20'))).not.toBeVisible();
+      await element(by.label('Shield card, 5 blocking points')).tap();
+      await element(by.label('Demon card, -6 points')).tap();
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await expect(element(by.label('HP: 20'))).toBeVisible();
+
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('HP: 20'))).toBeVisible();
+    });
 
     it.todo('sets the shield rank to the rank of the last enemy it was used against');
 
