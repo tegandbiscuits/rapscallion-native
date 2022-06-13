@@ -382,14 +382,16 @@ describe('Standard game', () => {
 
     it('can not increase shield rank', async () => {
       await expect(element(by.label('SR: 6'))).not.toBeVisible();
-      await element(by.label('Shield card, 5 blocking points')).tap();
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
       await element(by.label('Demon card, -6 points')).tap();
       await expect(element(by.label('SR: 6'))).toBeVisible();
-      await expect(element(by.label('SR: 7'))).not.toBeVisible();
+      await expect(element(by.label('SR: 0'))).not.toBeVisible();
 
       await element(by.label('Demon card, -7 points')).tap();
       await expect(element(by.label('SR: 7'))).not.toBeVisible();
-      await expect(element(by.label('SR: 6'))).toBeVisible();
+      // shield broke so it's back to 0 instead of remaining at 6
+      await expect(element(by.label('SR: 0'))).toBeVisible();
     });
 
     it('does not modify HP by selecting a shield', async () => {
