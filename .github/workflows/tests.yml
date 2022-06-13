@@ -6,7 +6,7 @@ on:
   
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -16,3 +16,5 @@ jobs:
     - run: yarn tsc
     - run: yarn lint
     - run: yarn test
+    - run: yarn e2e:ios:build-release
+    - run: yarn e2e:ios-release
