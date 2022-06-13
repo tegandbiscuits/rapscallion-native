@@ -14,7 +14,7 @@ describe('Main menu', () => {
   });
 
   it('can start a standard game', async () => {
-    const standardButton = element(by.text('STANDARD'));
+    const standardButton = element(by.text('PLAY'));
     await expect(standardButton).toBeVisible();
 
     const health = element(by.label('HP: 21'));

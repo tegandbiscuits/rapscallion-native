@@ -185,6 +185,8 @@ describe('Standard game', () => {
 
     // TODO: double check this is the desired behavior
     it.todo('shuffles cards back into deck after running');
+
+    it.todo('shuffles cards back into the deck when proceeding to the next room');
   });
 
   describe('monster cards', () => {
@@ -265,36 +267,13 @@ describe('Standard game', () => {
   describe('shield cards', () => {
     beforeEach(async () => {
       await device.reloadReactNative();
-      // await startGame([
-      //   { suit: 'diamonds', rank: 8 },
-      //   { suit: 'clubs', rank: 5 },
-      //   { suit: 'clubs', rank: 4 },
-      //   { suit: 'clubs', rank: 6 },
-      // ]);
-
       await startGame([
         { suit: 'diamonds', rank: 8 },
         { suit: 'diamonds', rank: 5 },
         { suit: 'clubs', rank: 7 },
         { suit: 'clubs', rank: 6 },
+        { suit: 'hearts', rank: 2 },
       ]);
-    });
-
-    xit('can use a shield', async () => {
-      /*
-      TODO: make this a test
-      Player picks up shield = 8
-      Player shield rank = {NOT SET}
-      Player attacks level 5 enemy
-      Player shield rank set to level 5
-      Player attacks level 4 enemy
-      Player takes no damage because 8 > 4
-      Player shield does not break because shield rank (5) is > 4
-      Player shield rank now set to 4 (shield rank = last enemy level)
-      Player attacks level 6 enemy
-      Player takes no damage because 8 > 6
-      Player shield breaks because shield rank (4) < 6
-      */
     });
 
     describe('when a shield is selected', () => {
@@ -303,12 +282,10 @@ describe('Standard game', () => {
         await expect(element(by.label('BP: 0'))).toBeVisible();
         await expect(element(by.label('SR: 0'))).toBeVisible();
         await expect(element(by.label('BP: 8'))).not.toBeVisible();
-        // await expect(element(by.label('SR: 0'))).not.toBeVisible();
 
         await element(by.label('Shield card, 8 blocking points')).tap();
 
         await expect(element(by.label('BP: 0'))).not.toBeVisible();
-        // await expect(element(by.label('SR: 0'))).not.toBeVisible();
         await expect(element(by.label('BP: 8'))).toBeVisible();
         await expect(element(by.label('SR: 0'))).toBeVisible();
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
@@ -317,18 +294,22 @@ describe('Standard game', () => {
       it('replaces any already selected shields', async () => {
         await element(by.label('Shield card, 8 blocking points')).tap();
         await expect(element(by.label('BP: 8'))).toBeVisible();
-        // await expect(element(by.label('SR: 0'))).toBeVisible();
+        await expect(element(by.label('SR: 0'))).toBeVisible();
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
+
+        await element(by.label('Demon card, -6 points')).tap();
+        await expect(element(by.label('SR: 6'))).toBeVisible();
         await expect(element(by.label('BP: 5'))).not.toBeVisible();
-        // await expect(element(by.label('SR: 0'))).not.toBeVisible();
+        await expect(element(by.label('SR: 0'))).not.toBeVisible();
         await expect(element(by.label('(Active) Shield card, 5 blocking points'))).not.toBeVisible();
 
         await element(by.label('Shield card, 5 blocking points')).tap();
         await expect(element(by.label('BP: 8'))).not.toBeVisible();
-        // await expect(element(by.label('SR: 0'))).not.toBeVisible();
+        await expect(element(by.label('SR: 6'))).not.toBeVisible();
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).not.toBeVisible();
+
         await expect(element(by.label('BP: 5'))).toBeVisible();
-        // await expect(element(by.label('SR: 0'))).toBeVisible();
+        await expect(element(by.label('SR: 0'))).toBeVisible();
         await expect(element(by.label('(Active) Shield card, 5 blocking points'))).toBeVisible();
       });
 
@@ -339,18 +320,155 @@ describe('Standard game', () => {
         await element(by.text('NEXT ROOM')).tap();
 
         await expect(element(by.label('BP: 8'))).toBeVisible();
-        await expect(element(by.label('SR: 0'))).toBeVisible();
+        await expect(element(by.label('SR: 7'))).toBeVisible();
         await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
       });
     });
 
-    it.todo('blocks the damage to up to the blocking rank');
+    it('blocks the damage to up to the blocking rank', async () => {
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('HP: 20'))).not.toBeVisible();
+      await element(by.label('Shield card, 5 blocking points')).tap();
+      await element(by.label('Demon card, -6 points')).tap();
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await expect(element(by.label('HP: 20'))).toBeVisible();
 
-    it.todo('sets the shield rank to the rank of the last enemy it was used against');
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('HP: 20'))).toBeVisible();
+    });
 
-    // TODO: also ensure that it still blocked some points before breaking
-    it.todo('breaks when used against an enemy with higher damage than shield rank');
+    it('sets the shield rank to the rank of the last enemy it was used against', async () => {
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await expect(element(by.label('SR: 7'))).not.toBeVisible();
+      await expect(element(by.label('SR: 6'))).not.toBeVisible();
 
-    it.todo('does not break when used without a rank');
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('SR: 0'))).not.toBeVisible();
+      await expect(element(by.label('SR: 7'))).toBeVisible();
+      await expect(element(by.label('SR: 6'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -6 points')).tap();
+      await expect(element(by.label('SR: 0'))).not.toBeVisible();
+      await expect(element(by.label('SR: 7'))).not.toBeVisible();
+      await expect(element(by.label('SR: 6'))).toBeVisible();
+    });
+
+    it('does not set shield rank when no shield is equiped', async () => {
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await expect(element(by.label('SR: 6'))).not.toBeVisible();
+      await element(by.label('Demon card, -6 points')).tap();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await expect(element(by.label('SR: 6'))).not.toBeVisible();
+    });
+
+    it('does not set shield rank when playing a potion card', async () => {
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await expect(element(by.label('BP: 8'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+
+      await element(by.label('Demon card, -7 points')).tap();
+      await element(by.label('Demon card, -6 points')).tap();
+      await expect(element(by.label('BP: 8'))).toBeVisible();
+      await expect(element(by.label('SR: 6'))).toBeVisible();
+      await element(by.label('NEXT ROOM')).tap();
+
+      await element(by.label('Potion card, 2 points')).tap();
+      await expect(element(by.label('SR: 2'))).not.toBeVisible();
+      await expect(element(by.label('BP: 8'))).toBeVisible();
+      await expect(element(by.label('SR: 6'))).toBeVisible();
+    });
+
+    it('can not increase shield rank', async () => {
+      await expect(element(by.label('SR: 6'))).not.toBeVisible();
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await element(by.label('Demon card, -6 points')).tap();
+      await expect(element(by.label('SR: 6'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('SR: 7'))).not.toBeVisible();
+      // shield broke so it's back to 0 instead of remaining at 6
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+    });
+
+    it('does not modify HP by selecting a shield', async () => {
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('HP: 14'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await expect(element(by.label('HP: 19'))).not.toBeVisible();
+      await expect(element(by.label('HP: 9'))).not.toBeVisible();
+
+      await element(by.label('Shield card, 5 blocking points')).tap();
+      await expect(element(by.label('HP: 14'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await expect(element(by.label('HP: 19'))).not.toBeVisible();
+      await expect(element(by.label('HP: 9'))).not.toBeVisible();
+    });
+
+    it('breaks when used against an enemy with higher damage than shield rank', async () => {
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await element(by.label('Demon card, -6 points')).tap();
+
+      await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
+      await expect(element(by.label('BP: 8'))).toBeVisible();
+      await expect(element(by.label('SR: 6'))).toBeVisible();
+      await expect(element(by.label('BP: 0'))).not.toBeVisible();
+      await expect(element(by.label('SR: 0'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('(Active) Shield card, 8 blocking points'))).not.toBeVisible();
+      await expect(element(by.label('BP: 8'))).not.toBeVisible();
+      await expect(element(by.label('SR: 6'))).not.toBeVisible();
+      await expect(element(by.label('BP: 0'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+    });
+
+    it('does not break when used without a rank', async () => {
+      await element(by.label('Shield card, 5 blocking points')).tap();
+      await expect(element(by.label('(Active) Shield card, 5 blocking points'))).toBeVisible();
+      await expect(element(by.label('BP: 5'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('HP: 19'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -7 points')).tap();
+      await expect(element(by.label('(Active) Shield card, 5 blocking points'))).toBeVisible();
+      await expect(element(by.label('BP: 5'))).toBeVisible();
+      await expect(element(by.label('SR: 7'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).not.toBeVisible();
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await expect(element(by.label('HP: 19'))).toBeVisible();
+    });
+
+    it('can play a little game', async () => {
+      await startGame([
+        { suit: 'diamonds', rank: 8 },
+        { suit: 'clubs', rank: 5 },
+        { suit: 'clubs', rank: 4 },
+        { suit: 'clubs', rank: 6 },
+      ]);
+      await element(by.label('Shield card, 8 blocking points')).tap();
+      await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('BP: 8'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+      await element(by.label('Demon card, -5 points')).tap();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('SR: 5'))).toBeVisible();
+      await element(by.label('Demon card, -4 points')).tap();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('(Active) Shield card, 8 blocking points'))).toBeVisible();
+      await expect(element(by.label('SR: 4'))).toBeVisible();
+      await element(by.label('Demon card, -6 points')).tap();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('(Active) Shield card, 8 blocking points'))).not.toBeVisible();
+      await expect(element(by.label('BP: 0'))).toBeVisible();
+      await expect(element(by.label('SR: 0'))).toBeVisible();
+    });
   });
 });
