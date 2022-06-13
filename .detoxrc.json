@@ -8,6 +8,11 @@
       "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/rapscallion.app",
       "build": "xcodebuild -workspace ios/rapscallionnative.xcworkspace -scheme rapscallionnative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
     },
+    "ios.release": {
+      "type": "ios.app",
+      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/rapscallion.app",
+      "build": "RCT_NO_LAUNCH_PACKAGER=1 xcodebuild -workspace ios/rapscallionnative.xcworkspace -scheme rapscallionnative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build"
+    },
     "android": {
       "type": "android.apk",
       "binaryPath": "SPECIFY_PATH_TO_YOUR_APP_BINARY"
@@ -33,6 +38,10 @@
     "ios": {
       "device": "simulator",
       "app": "ios"
+    },
+    "ios.release": {
+      "device": "simulator",
+      "app": "ios.release"
     },
     "android": {
       "device": "emulator",
