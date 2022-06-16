@@ -13,14 +13,15 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1886365DC394432E88D8EAA9 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42986A4C8C94C8DA891C517 /* noop-file.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		4FBE5748296D46C0B0643367 /* Simonetta-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01555F3DAA8A4F6DAB8552CD /* Simonetta-Regular.ttf */; };
 		96905EF65AED1B983A6B3ABC /* libPods-rapscallionnative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-rapscallionnative.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		4FBE5748296D46C0B0643367 /* Simonetta-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01555F3DAA8A4F6DAB8552CD /* Simonetta-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* rapscallionnative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = rapscallionnative.app; path = rapscallion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		01555F3DAA8A4F6DAB8552CD /* Simonetta-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Simonetta-Regular.ttf"; path = "../assets/fonts/Simonetta-Regular.ttf"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* rapscallion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rapscallion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = rapscallionnative/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = rapscallionnative/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -36,7 +37,6 @@
 		E42986A4C8C94C8DA891C517 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "rapscallionnative/noop-file.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		01555F3DAA8A4F6DAB8552CD /* Simonetta-Regular.ttf */ = {isa = PBXFileReference; name = "Simonetta-Regular.ttf"; path = "../assets/fonts/Simonetta-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +104,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* rapscallionnative.app */,
+				13B07F961A680F5B00A75B9A /* rapscallion.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,13 +128,12 @@
 			sourceTree = "<group>";
 		};
 		EE8E71F7BB674928AF328F7A /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 				01555F3DAA8A4F6DAB8552CD /* Simonetta-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -157,7 +156,7 @@
 			);
 			name = rapscallionnative;
 			productName = rapscallionnative;
-			productReference = 13B07F961A680F5B00A75B9A /* rapscallionnative.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* rapscallion.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -316,6 +315,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = rapscallionnative/rapscallion.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M2X7LT3N36;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -329,7 +329,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = teganrauh.rapscallion;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teganrauh.rapscallion;
 				PRODUCT_NAME = rapscallion;
 				SWIFT_OBJC_BRIDGING_HEADER = "rapscallionnative/rapscallionnative-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -347,6 +347,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = rapscallionnative/rapscallion.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M2X7LT3N36;
 				INFOPLIST_FILE = rapscallionnative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -355,7 +356,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = teganrauh.rapscallion;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teganrauh.rapscallion;
 				PRODUCT_NAME = rapscallion;
 				SWIFT_OBJC_BRIDGING_HEADER = "rapscallionnative/rapscallionnative-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
