@@ -19,12 +19,12 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     # increment_build_number(xcodeproj: "rapscallionnative.xcodeproj")
-    match(type: "development")
+    match(type: "appstore")
+    ENV['RCT_NO_LAUNCH_PACKAGER'] = '1'
     build_app(
       workspace: "rapscallionnative.xcworkspace",
       scheme: "rapscallionnative",
-      export_method: "development"
     )
-    upload_to_testflight
+    upload_to_testflight(skip_submission: true)
   end
 end
