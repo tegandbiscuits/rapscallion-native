@@ -3,6 +3,42 @@ version: 2.1
 orbs:
   node: circleci/node@5
 
+commands:
+  pod-install:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "ios/Podfile.lock" }}
+      - run:
+          name: Pod Install
+          working_directory: ios
+          command: pod install
+      - save_cache:
+          key: v1-deps-{{ checksum "ios/Podfile.lock" }}
+          paths:
+            - ios/Pods
+
+  detox-tests:
+    steps:
+      - restore_cache:
+          keys:
+            - ios-build-{{ .Branch }}
+            - ios-build
+      - run:
+          name: Build iOS app for testing
+          command: yarn e2e:ios-release:build
+      - run:
+          name: Run Detox tests
+          command: yarn e2e:ios-release
+      - save_cache:
+          key: ios-build-{{ .Branch }}
+          paths:
+            - ios/build
+      - save_cache:
+          key: ios-build
+          paths:
+            - ios/build
+
 jobs:
   test:
     macos:
@@ -20,6 +56,8 @@ jobs:
       - run:
           name: Run tests
           command: yarn test
+      - pod-install
+      - detox-tests
 
 workflows:
   build:
