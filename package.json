@@ -7,7 +7,9 @@
     "test": "jest",
     "lint": "eslint .",
     "e2e:ios": "detox test --configuration ios",
-    "e2e:ios:build": "detox build --configuration ios"
+    "e2e:ios-release": "detox test --configuration ios-release",
+    "e2e:ios:build": "detox build --configuration ios",
+    "e2e:ios-release:build": "detox build --configuration ios-release"
   },
   "jest": {
     "preset": "jest-expo",
