@@ -6,7 +6,7 @@
     "ios": {
       "type": "ios.app",
       "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/rapscallion.app",
-      "build": "xcodebuild -workspace ios/rapscallionnative.xcworkspace -scheme rapscallionnative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+      "build": "cd ios && fastlane test_build configuration:Debug"
     },
     "android": {
       "type": "android.apk",
