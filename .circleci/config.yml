@@ -25,6 +25,12 @@ commands:
             - ios-build-{{ .Branch }}
             - ios-build
       - run:
+          name: Install applesimutils
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+      - run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+      - run:
           name: Build iOS app for testing
           command: yarn e2e:ios-release:build
       - run:
