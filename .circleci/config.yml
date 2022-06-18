@@ -20,22 +20,19 @@ commands:
 
   detox-tests:
     steps:
-      - restore_cache:
-          keys:
-            - ios-build-{{ .Branch }}
-            - ios-build
       - run:
           name: Install applesimutils
           command: |
             brew tap wix/brew
             brew install applesimutils
       - run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+      - restore_cache:
+          keys:
+            - ios-build-{{ .Branch }}
+            - ios-build
       - run:
           name: Build iOS app for testing
           command: yarn e2e:ios-release:build
-      - run:
-          name: Run Detox tests
-          command: yarn e2e:ios-release
       - save_cache:
           key: ios-build-{{ .Branch }}
           paths:
@@ -44,6 +41,9 @@ commands:
           key: ios-build
           paths:
             - ios/build
+      - run:
+          name: Run Detox tests
+          command: yarn e2e:ios-release
 
 jobs:
   test:
