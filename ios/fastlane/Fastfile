@@ -27,4 +27,16 @@ platform :ios do
     )
     upload_to_testflight(skip_submission: true)
   end
+
+  lane :test_build do |options|
+    ENV['RCT_NO_LAUNCH_PACKAGER'] = '1'
+    xcodebuild(
+      workspace: 'rapscallionnative.xcworkspace',
+      scheme: 'rapscallionnative',
+      configuration: options[:configuration] || 'Release',
+      sdk: 'iphonesimulator',
+      xcargs: '-derivedDataPath build'
+      # derived_data_path: 'build'
+    )
+  end
 end

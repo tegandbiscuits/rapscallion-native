@@ -1,0 +1,71 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5
+
+commands:
+  pod-install:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "ios/Podfile.lock" }}
+      - run:
+          name: Pod Install
+          working_directory: ios
+          command: pod install
+      - save_cache:
+          key: v1-deps-{{ checksum "ios/Podfile.lock" }}
+          paths:
+            - ios/Pods
+
+  detox-tests:
+    steps:
+      - run:
+          name: Install applesimutils
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+      - run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+      - restore_cache:
+          keys:
+            - ios-build-{{ .Branch }}
+            - ios-build
+      - run:
+          name: Build iOS app for testing
+          command: yarn e2e:ios-release:build
+      - save_cache:
+          key: ios-build-{{ .Branch }}
+          paths:
+            - ios/build
+      - save_cache:
+          key: ios-build
+          paths:
+            - ios/build
+      - run:
+          name: Run Detox tests
+          command: yarn e2e:ios-release
+
+jobs:
+  test:
+    macos:
+      xcode: 13.4.1
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Check types
+          command: yarn tsc
+      - run:
+          name: Run tests
+          command: yarn test
+      - pod-install
+      - detox-tests
+
+workflows:
+  build:
+    jobs:
+      - test
