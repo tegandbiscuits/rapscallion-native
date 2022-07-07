@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { GameModes } from '../Game';
+import { GameModes } from '../types';
 import { IPlayCard } from './PlayCard';
 
 const Decks: Record<keyof typeof GameModes, IPlayCard[]> = {

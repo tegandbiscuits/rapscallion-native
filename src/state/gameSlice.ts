@@ -69,6 +69,11 @@ const gameSlice = createSlice({
     },
 
     dealGame(state, action: PayloadAction<{ deck: IPlayCard[], shuffle: boolean }>) {
+      Object.keys(initialState).forEach((key) => {
+        // @ts-expect-error some shit about key
+        state[key] = initialState[key];
+      });
+
       let cards = action.payload.deck;
       if (action.payload.shuffle) {
         cards = shuffleArray(action.payload.deck);

@@ -21,6 +21,7 @@ describe('Standard game', () => {
         { suit: 'hearts', rank: 2 },
         { suit: 'hearts', rank: 3 },
         { suit: 'clubs', rank: 5 },
+        { suit: 'clubs', rank: 21 },
       ]);
     });
 
@@ -79,7 +80,24 @@ describe('Standard game', () => {
       await expect(demonCard).not.toBeVisible();
     });
 
-    it.todo('ends the game when the player runs out of HP');
+    it('ends the game when the player runs out of HP', async () => {
+      await element(by.text('RUN')).tap();
+      await expect(element(by.label('HP: 0'))).not.toBeVisible();
+      await expect(element(by.text("You're dead"))).not.toBeVisible();
+      await expect(element(by.text('New game'))).not.toBeVisible();
+
+      await element(by.label('Demon card, -21 points')).tap();
+
+      await expect(element(by.label('HP: 0'))).toBeVisible();
+      await expect(element(by.text('You are dead.'))).toBeVisible();
+      await expect(element(by.text('NEW GAME'))).toBeVisible();
+
+      await expect(element(by.label('HP: 21'))).not.toBeVisible();
+      await element(by.text('NEW GAME')).tap();
+      await expect(element(by.label('HP: 21'))).toBeVisible();
+      await expect(element(by.label('HP: 0'))).not.toBeVisible();
+      // TODO: also test progress
+    });
 
     it.todo('ends the game when there are no unplayed cards');
 

@@ -52,6 +52,8 @@ const theme = {
     text: '#fff',
     consumable: '#ba123a',
     fightable: '#000000',
+    surface: '#fffbeb',
+    accent: '#1b6ae3',
   },
 };
 

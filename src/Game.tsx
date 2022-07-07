@@ -5,6 +5,7 @@ import { Button, useTheme } from 'react-native-paper';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayCard, { IPlayCard } from './decks/PlayCard';
+import GameOverModal from './GameOverModal';
 import Stat from './Stat';
 import {
   dealRoom,
@@ -13,10 +14,6 @@ import {
   dealGame,
 } from './state/gameSlice';
 import { RootState } from './state/store';
-
-export enum GameModes {
-  Standard = 'Standard',
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -99,6 +96,7 @@ const Game = () => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <GameOverModal visible={hp <= 0} />
       {/* <Text style={styles.progress}>
         Progress: {progress}
       </Text> */}
